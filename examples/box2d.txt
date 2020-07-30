@@ -1,0 +1,408 @@
+#include "states/MenuScreen.hpp"
+
+#include <stdio.h>
+#include <vector>
+
+#include <glm\gtc\type_ptr.hpp>
+
+#include <Box2D/Box2D.h>
+
+#include <SDL2/SDL_opengl.h>
+
+#include "core/Game.hpp"
+#include "graphics/Camera.hpp"
+#include "graphics/Text.hpp"
+#include "graphics/TriangleShape.hpp"
+#include "graphics/RectangleShape.hpp"
+#include "graphics/Mesh.hpp"
+#include "graphics/GLTexture.hpp"
+#include "graphics/Shader.hpp"
+#include "lighting/AmbientLight.hpp"
+#include "lighting/DiffuseLight.hpp"
+#include "lighting/Material.hpp"
+//#include "steeriously/libinc.hpp"
+#include "core/GameController.hpp"
+
+MenuScreen::MenuScreen()
+:
+    ScreenState()
+{
+    m_running = false;
+
+    setState(menuState::s_uninitialized);
+
+    if(!m_texture.loadTexture("images/menu.png", pk::Game::getWindow()->getRenderer()))
+        printf("Could not load texture!");
+
+    SDL_Rect sprRect;
+    sprRect.x = 0;
+    sprRect.y = 0;
+    sprRect.w = m_texture.getWidth();
+    sprRect.h = m_texture.getHeight();
+    m_sprite = pk::Sprite(&m_texture, sprRect);
+
+    m_font = new pk::Font();
+
+    if(m_font->loadFont("fonts/Sansation_Regular.ttf", 32))
+    {
+        m_text = new pk::Text(m_font, &m_textTexture, {0,0,0,0}, "Hello, World!");
+    }
+    else
+    {
+        printf("Could not load the font! Error:%s\n", SDL_GetError());
+    }
+
+    m_text->setRenderMode(pk::Text::renderMode::blendedWrapped, pk::Game::getInstance().getWindow()->getWindowRect().w/2);
+
+    m_music=Mix_LoadMUS("sound/title.ogg");
+    if(!m_music)
+    {
+        printf("Mix_LoadMUS(\"title.ogg\"): %s\n", Mix_GetError());
+    }
+
+    Mix_VolumeMusic(20);
+
+    //Mix_PlayMusic(m_music, -1);
+}
+
+MenuScreen::~MenuScreen()
+{
+    TTF_CloseFont(m_font->getFont());
+    delete m_text;
+    delete m_font;
+
+    Mix_HaltMusic();
+    Mix_FreeMusic(m_music);
+}
+
+void MenuScreen::display()
+{
+    setState(menuState::s_running);
+    m_running = true;
+
+    SDL_Event e;
+
+    pk::Window* pkWin = pk::Game::getWindow();
+    SDL_Window* win = pk::Game::getWindow()->getWindow();
+    SDL_GLContext* context = &pk::Game::getWindow()->getContext();
+
+    const char* tgvShader = "shaders/textured geometry/specular lighting/shader.vert";
+    const char* tgfShader = "shaders/textured geometry/specular lighting/shader.frag";
+	pk::Shader *tgShader = new pk::Shader();
+	tgShader->load(tgvShader, tgfShader);
+
+    pk::GLStates textured_glStates;
+	textured_glStates.modelLocation = &tgShader->getModelLocation();
+    textured_glStates.projectionLocation = &tgShader->getProjectionLocation();
+    textured_glStates.viewLocation = &tgShader->getViewLocation();
+    textured_glStates.ambientIntensityLocation = &tgShader->getAmbientIntensityLocation();
+    textured_glStates.ambientColorLocation = &tgShader->getAmbientColorLocation();
+    textured_glStates.diffuseIntensityLocation = &tgShader->getDiffuseIntensityLocation();
+    textured_glStates.directionLocation = &tgShader->getDirectionLocation();
+    textured_glStates.specularIntensityLocation = &tgShader->getSpecularIntensityLocation();
+    textured_glStates.shininessLocation = &tgShader->getShininessLocation();
+    textured_glStates.eyePositionLocation = &tgShader->getEyePositionLocation();
+
+	const char* fvShader = "shaders/untextured geometry/specular lighting/shader.vert";
+    const char* ffShader = "shaders/untextured geometry/specular lighting/shader.frag";
+	pk::Shader *fShader = new pk::Shader();
+	fShader->load(fvShader, ffShader);
+
+    pk::GLStates flat_glStates;
+    flat_glStates.modelLocation = &fShader->getModelLocation();
+    flat_glStates.projectionLocation = &fShader->getProjectionLocation();
+    flat_glStates.viewLocation = &fShader->getViewLocation();
+    flat_glStates.ambientIntensityLocation = &fShader->getAmbientIntensityLocation();
+    flat_glStates.ambientColorLocation = &fShader->getAmbientColorLocation();
+    flat_glStates.diffuseIntensityLocation = &fShader->getDiffuseIntensityLocation();
+    flat_glStates.directionLocation = &fShader->getDirectionLocation();
+    flat_glStates.shininessLocation = &fShader->getShininessLocation();
+    flat_glStates.specularIntensityLocation = &fShader->getSpecularIntensityLocation();
+    flat_glStates.eyePositionLocation = &fShader->getEyePositionLocation();
+
+    //glm::mat4 projection = glm::perspective(45.0f, 800.f / 600.f, 0.1f, 100.0f);
+    glm::mat4 projection = glm::ortho(0.0f, 800.0f, 600.0f, 0.0f, 0.1f, 100.0f);
+
+    SDL_GL_MakeCurrent(win, *context);
+    glViewport(0, 0, 800, 600);
+    glEnable(GL_BLEND);
+
+    pk::RectangleShape rect = pk::RectangleShape(800.f, 100.f);
+    rect.setPosition({400.f, 550.f});
+    rect.setOrigin({400.f, 50.f});
+    //rect.setVertexColors(colors);
+    rect.setFillColor(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+
+    pk::TriangleShape p1 = pk::TriangleShape(100.f, 100.f);
+    GLfloat colors [16] = {
+        1.f, 0.f, 0.f, 1.f,
+        0.f, 1.f, 0.f, 1.f,
+        0.f, 1.f, 0.f, 1.f,
+        0.f, 0.f, 1.f, 1.f
+    };
+    p1.setPosition({100.f, 200.f});
+    p1.setVertexColors(colors);
+    //p1.setFillColor(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+
+    pk::TriangleShape p2 = pk::TriangleShape(100.f, 100.f);
+    p2.setPosition({300.f, 200.f});
+    p2.setVertexColors(colors);
+
+    pk::TriangleShape p3 = pk::TriangleShape(100.f, 100.f);
+    p3.setPosition({300.f, 400.f});
+    p3.setFillColor({0.f, 1.f, 1.f, 1.f});
+
+    pk::TriangleShape p4 = pk::TriangleShape(100.f, 100.f);
+    p4.setPosition({100.f, 400.f});
+    p4.setFillColor({1.0f, 0.5f, 0.f, 1.0f});
+
+    unsigned int indices[] = {
+		0, 1, 2,
+		2, 3, 0
+	};
+
+	GLfloat vertices[] = {
+	    // position     colors                      texture     normals
+	    //x      y      z	   r    g    b    a      u	  v		nx	  ny    nz
+		0.0f,   0.0f,   0.0f, 1.f, 1.f, 1.f, 1.f,   0.0f, 0.0f, 0.0f, 0.0f, 0.0f, //bottom left
+		100.0f, 0.0f,   0.0f, 1.f, 1.f, 1.f, 1.f,	0.5f, 0.0f, 0.0f, 0.0f, 0.0f, //into background for depth...
+		200.0f, 0.0f,   0.0f, 1.f, 1.f, 1.f, 1.f,	1.0f, 0.0f, 0.0f, 0.0f, 0.0f, //bottom right
+		100.0f, 200.0f, 0.0f, 1.f, 1.f, 1.f, 1.f,	0.5f, 1.0f, 0.0f, 0.0f, 0.0f  //top
+	};
+
+	//printf("vertices: %d\n", sizeof(vertices)/sizeof(vertices[0]));
+	//printf("indices: %d\n", sizeof(indices)/sizeof(indices[0]));
+
+    pk::Mesh triangle = pk::Mesh(vertices, indices, sizeof(vertices)/sizeof(vertices[0]), sizeof(indices)/sizeof(indices[0]));
+    triangle.setPosition({500.f, 200.f});
+    triangle.setOrigin({100.f, 100.f});
+    triangle.setScale({0.75f, 0.75f});
+
+    pk::GLTexture brick("images/brick.png");
+    pk::GLTexture dirt("images/dirt.png");
+
+    pk::Material shinyMaterial = pk::Material(2.0f, 320);
+    pk::Material dullMaterial = pk::Material(0.3f, 4);
+
+    pk::Camera cam = pk::Camera({0.f, 0.f});
+    cam.setRect({0.f, 0.f, 800.f, 600.f});
+    cam.setOrigin({400.f, 300.f});
+    cam.setPosition({400.f, 300.f});
+    cam.setScale({1.f, 1.f});
+
+    pk::DiffuseLight mainLight = pk::DiffuseLight({1.0f, 1.0f, 1.0f, 1.0f}, 0.2f, cam.getOrigin().x/2.f, cam.getOrigin().y/2.f, -1.0f, 0.5f);
+    pk::DiffuseLight secondLight = pk::DiffuseLight({1.0f, 1.0f, 1.0f, 1.0f}, 0.2f, 100.0f, 100.0f, -1.0f, 1.0f);
+
+    printf("Controllers available: %d\n", SDL_NumJoysticks());
+
+    pk::GameController controller1 = pk::GameController(0);
+    printf("Controller name: %s\n", controller1.getControllerName());
+
+    //////////////////////////////////////
+    //box2d setup
+    //////////////////////////////////////
+    b2World world({0.f, 100.f});
+
+    b2BodyDef groundBodyDef;
+    groundBodyDef.position.Set(0.0f, 17.0f);
+
+    b2Body* groundBody = world.CreateBody(&groundBodyDef);
+
+    b2PolygonShape groundBox;
+    groundBox.SetAsBox(40.0f, 1.0f);
+
+    groundBody->CreateFixture(&groundBox, 0.0f);
+
+    b2BodyDef bodyDef;
+    bodyDef.type = b2_dynamicBody;
+    bodyDef.position.Set(10.0f, 0.0f);
+    bodyDef.angle = glm::radians(45.f);
+    b2Body* body = world.CreateBody(&bodyDef);
+
+    b2PolygonShape dynamicBox;
+    dynamicBox.SetAsBox(1.0f, 1.0f);
+
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape = &dynamicBox;
+    fixtureDef.density = 1.0f;
+    fixtureDef.friction = 0.3f;
+    fixtureDef.restitution = 0.5f;
+
+    body->CreateFixture(&fixtureDef);
+
+    float32 timeStep = 1.0f / 60.0f;
+    int32 velocityIterations = 6;
+    int32 positionIterations = 2;
+    b2Vec2 position = {0.f, 0.f};
+    float32 angle = 0.f;
+
+    const Uint32 MAXIMUM_FRAME_RATE = 60;
+    const Uint32 MINIMUM_FRAME_RATE = 30;
+    const double UPDATE_INTERVAL = (1.0 / MAXIMUM_FRAME_RATE);
+    const double MAX_CYCLES_PER_FRAME = (MAXIMUM_FRAME_RATE / MINIMUM_FRAME_RATE);
+
+    static double lastFrameTime = 0.0;
+    static double cyclesLeftOver = 0.0;
+    double currentTime;
+    double updateIterations;
+
+    while(isRunning())
+    {
+        while(SDL_PollEvent(&e))
+        {
+            //printf("Camera: %d,%d\n", cam.getPosition().x, cam.getPosition().y);
+            if(e.type == SDL_QUIT)
+            {
+                setState(menuState::s_exit);
+                return;
+            }
+
+            if(e.type == SDL_KEYDOWN)
+            {
+                switch(e.key.keysym.scancode)
+                {
+                case SDL_SCANCODE_A:
+                {
+                    cam.move({-10.f, 0.f});
+                }
+                break;
+                case SDL_SCANCODE_D:
+                {
+                    cam.move({10.f, 0.f});
+                }
+                break;
+                case SDL_SCANCODE_W:
+                {
+                    cam.move({0.f, -10.f});
+                }
+                break;
+                case SDL_SCANCODE_S:
+                {
+                    cam.move({0.f, 10.f});
+                }
+                break;
+                case SDL_SCANCODE_KP_4:
+                {
+                    cam.rotate(-5.f);
+                }
+                break;
+                case SDL_SCANCODE_KP_6:
+                {
+                    cam.rotate(5.f);
+                }
+                break;
+                case SDL_SCANCODE_KP_8:
+                {
+                    cam.scale({0.01f, 0.01f});
+                }
+                break;
+                case SDL_SCANCODE_KP_2:
+                {
+                    cam.scale({-0.01f, -0.01f});
+                }
+                break;
+                default:
+                break;
+                }
+            }
+
+            if(e.type == SDL_KEYUP)
+            {
+                switch(e.key.keysym.scancode)
+                {
+                case SDL_SCANCODE_ESCAPE:
+                {
+                    setState(menuState::s_exit);
+                    return;
+                }
+                break;
+                case SDL_SCANCODE_RETURN:
+                {
+                    setState(menuState::s_play);
+                    return;
+                }
+                break;
+                default:
+                break;
+                }
+            }
+        }
+
+        currentTime = SDL_GetTicks();
+        updateIterations = ((currentTime - lastFrameTime) + cyclesLeftOver);
+
+        if (updateIterations > (MAX_CYCLES_PER_FRAME * UPDATE_INTERVAL)) {
+            updateIterations = (MAX_CYCLES_PER_FRAME * UPDATE_INTERVAL);
+        }
+
+        while (updateIterations > UPDATE_INTERVAL) {
+            updateIterations -= UPDATE_INTERVAL;
+            world.Step(UPDATE_INTERVAL, velocityIterations, positionIterations);
+            printf("%4.2f %4.2f %4.2f\n", position.x, position.y, angle);
+        }
+
+        position = body->GetPosition();
+        angle = body->GetAngle();
+
+        p1.setPosition({30.f*position.x, 30.f*position.y});
+        p1.setAngle(30*glm::degrees(body->GetAngle()));
+
+        if(controller1.getAxisState(pk::GameControllerAxis::LEFT_X) > 8000)
+            p1.move({10.f, 0.f});
+
+        if(controller1.getAxisState(pk::GameControllerAxis::LEFT_X) < -8000)
+            p1.move({-10.f, 0.f});
+
+        if(controller1.getAxisState(pk::GameControllerAxis::LEFT_Y) > 8000)
+            p1.move({0.f, 10.f});
+
+        if(controller1.getAxisState(pk::GameControllerAxis::LEFT_Y) < -8000)
+            p1.move({0.f, -10.f});
+
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        /////////////////////////////////////////////////////////////////
+        //RENDERING PASSES REQUIRE THE PROPER ORDER OF OPERATIONS!!!
+        //OBEY!!!!!!!!!!
+        /////////////////////////////////////////////////////////////////
+
+        //if changing to non-textured (flat) objects...
+        //must provide separate OpenGL states and pass
+        //around to make valid updates in the right order:
+        //shader->lighting->view/camera->projection->models
+        fShader->use();
+
+        mainLight.update(*flat_glStates.ambientIntensityLocation, *flat_glStates.ambientColorLocation, *flat_glStates.diffuseIntensityLocation, *flat_glStates.directionLocation);
+
+        //initialize view with identity matrix...
+        glm::mat4 view = glm::mat4(1.0f);
+        //view must then be translated "above" the scene on the z-axis
+        //by some arbitrary value so that the objects in the scene are not culled by OpenGL
+        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -0.1f));
+
+        //pass the view to the camera to perform
+        //camera-level (viewport) manipulations
+        cam.update(flat_glStates, view);
+        glUniform3f(*flat_glStates.eyePositionLocation, cam.getPosition().x, cam.getPosition().y, -0.1f);
+        glUniformMatrix4fv(*flat_glStates.viewLocation, 1, GL_FALSE, glm::value_ptr(view));
+
+        glUniformMatrix4fv(*flat_glStates.projectionLocation, 1, GL_FALSE, glm::value_ptr(projection));
+
+        //begin model-level (graphical object) manipulations
+        glm::mat4 model = glm::mat4(1.0f);
+        glUniformMatrix4fv(*flat_glStates.modelLocation, 1, GL_FALSE, glm::value_ptr(model));
+
+        shinyMaterial.use(*flat_glStates.specularIntensityLocation, *flat_glStates.shininessLocation);
+
+        pkWin->draw(triangle, flat_glStates);
+        pkWin->draw(rect, flat_glStates);
+        pkWin->draw(p1, flat_glStates);
+        pkWin->draw(p2, flat_glStates);
+        pkWin->draw(p3, flat_glStates);
+        pkWin->draw(p4, flat_glStates);
+
+        glUseProgram(0);
+
+        SDL_GL_SwapWindow(win);
+    }
+}

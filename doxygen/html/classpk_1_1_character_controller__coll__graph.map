@@ -1,0 +1,13 @@
+<map id="pk::CharacterController" name="pk::CharacterController">
+<area shape="rect" id="node2" href="$classb2_contact_listener.html" title="{b2ContactListener\n||}" alt="" coords="5,1343,132,1420"/>
+<area shape="rect" id="node3" href="$classpk_1_1_character_body.html" title="A class representing a Box2D dynamic body with special fixtures and data used to track collisions and..." alt="" coords="523,1152,681,1611"/>
+<area shape="rect" id="node4" href="$classpk_1_1_sensor_data.html" title="A class wrapping some user data for Box2D fixtures. Includes data for number of contacts being made t..." alt="" coords="937,785,1059,950"/>
+<area shape="rect" id="node14" href="$classpk_1_1_game_controller.html" title="Convenience class for abstracting functionality that already exists in SDL. " alt="" coords="1174,755,1323,979"/>
+<area shape="rect" id="node30" href="$classpk_1_1_g_l_texture.html" title="Class for creating textures usable with OpenGL from SDL. " alt="" coords="1561,741,1760,994"/>
+<area shape="rect" id="node11" href="$structpk_1_1_g_l_rect.html" title="Useful for defining size and origin of an OpenGL object. " alt="" coords="1811,292,1899,369"/>
+<area shape="rect" id="node20" href="$classpk_1_1_g_l_sprite.html" title="{pk::GLSprite\n||+ GLSprite()\l+ GLSprite()\l+ ~GLSprite()\l+ setTextureRect()\l+ getTextureRect()\l+ getTexture()\l+ setFillColor()\l+ getFillColor()\l+ setVertexColors()\l+ getVertexColors()\l+ draw()\l&#45; updateNormals()\l&#45; updateGeometry()\l}" alt="" coords="1841,1255,1976,1508"/>
+<area shape="rect" id="node23" href="$structpk_1_1_g_l_transform_data.html" title="Transform data for GLTransformable objects. Used by the GLTransformable class internally, but usable in isolation as well. " alt="" coords="2240,461,2385,539"/>
+<area shape="rect" id="node21" href="$classpk_1_1_g_l_drawable.html" title="{pk::GLDrawable\n||+ GLDrawable()\l+ ~GLDrawable()\l+ draw()\l}" alt="" coords="2003,814,2123,921"/>
+<area shape="rect" id="node22" href="$classpk_1_1_g_l_transformable.html" title="Decorator class for creating easing OpenGL transformations for game objects. " alt="" coords="2148,689,2296,1045"/>
+<area shape="rect" id="node24" href="$structpk_1_1_g_l_states.html" title="Stores the states used to draw OpenGL objects. " alt="" coords="2385,292,2483,369"/>
+</map>

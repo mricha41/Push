@@ -1,0 +1,4 @@
+<map id="pk::Drawable" name="pk::Drawable">
+<area shape="rect" id="node2" href="$classpk_1_1_sprite.html" title="Drawable sprite using a Texture as its drawable resource. Part of the Decorator pattern along with th..." alt="" coords="5,277,136,560"/>
+<area shape="rect" id="node3" href="$classpk_1_1_text.html" title="Drawable text using a Texture as its drawable resource. Part of the Decorator pattern along with the ..." alt="" coords="161,160,319,677"/>
+</map>

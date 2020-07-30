@@ -1,0 +1,4 @@
+<map id="pk::Game" name="pk::Game">
+<area shape="rect" id="node3" href="$classpk_1_1_screen_state.html" title="Abstract class for screen states, necessary for implementing the State pattern along with the Game cl..." alt="" coords="403,285,526,435"/>
+<area shape="rect" id="node7" href="$classpk_1_1_window.html" title="Class for SDL window creation and management, implemented using the Facade pattern to provide a more ..." alt="" coords="550,160,696,560"/>
+</map>

@@ -1,0 +1,10 @@
+<map id="pk::Walker" name="pk::Walker">
+<area shape="rect" id="node2" href="$classpk_1_1_kinematic_body.html" title="A class wrapper to ease the instantiation and use of Box2D kinematic bodies. It also performs convers..." alt="" coords="277,1255,431,1611"/>
+<area shape="rect" id="node8" href="$structpk_1_1_g_l_rect.html" title="Useful for defining size and origin of an OpenGL object. " alt="" coords="907,292,995,369"/>
+<area shape="rect" id="node13" href="$classpk_1_1_g_l_sprite.html" title="{pk::GLSprite\n||+ GLSprite()\l+ GLSprite()\l+ ~GLSprite()\l+ setTextureRect()\l+ getTextureRect()\l+ getTexture()\l+ setFillColor()\l+ getFillColor()\l+ setVertexColors()\l+ getVertexColors()\l+ draw()\l&#45; updateNormals()\l&#45; updateGeometry()\l}" alt="" coords="1095,1306,1229,1559"/>
+<area shape="rect" id="node16" href="$structpk_1_1_g_l_transform_data.html" title="Transform data for GLTransformable objects. Used by the GLTransformable class internally, but usable in isolation as well. " alt="" coords="569,608,715,685"/>
+<area shape="rect" id="node23" href="$classpk_1_1_g_l_texture.html" title="Class for creating textures usable with OpenGL from SDL. " alt="" coords="1124,520,1323,773"/>
+<area shape="rect" id="node14" href="$classpk_1_1_g_l_drawable.html" title="{pk::GLDrawable\n||+ GLDrawable()\l+ ~GLDrawable()\l+ draw()\l}" alt="" coords="1314,961,1434,1067"/>
+<area shape="rect" id="node15" href="$classpk_1_1_g_l_transformable.html" title="Decorator class for creating easing OpenGL transformations for game objects. " alt="" coords="780,836,928,1192"/>
+<area shape="rect" id="node17" href="$structpk_1_1_g_l_states.html" title="Stores the states used to draw OpenGL objects. " alt="" coords="367,292,466,369"/>
+</map>

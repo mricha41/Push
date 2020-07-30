@@ -1,0 +1,5 @@
+<map id="pk::spriteData" name="pk::spriteData">
+<area shape="rect" id="node3" href="$classpk_1_1_texture.html" title="A class implemented using the Facade pattern used for loading SDL_Texture data. " alt="" coords="131,337,241,502"/>
+<area shape="rect" id="node9" href="$classpk_1_1_transform.html" title="Transform used to manipulate the position, scale, center, and rotation of objects. " alt="" coords="739,315,883,524"/>
+<area shape="rect" id="node10" href="$structpk_1_1transform_data.html" title="Data used for transformations. " alt="" coords="749,160,874,237"/>
+</map>

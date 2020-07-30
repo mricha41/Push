@@ -1,0 +1,4 @@
+<map id="pk::Sprite::setBoundsRect" name="pk::Sprite::setBoundsRect">
+<area shape="rect" id="node2" href="$classpk_1_1_transform.html#a4333b1a8ea64060f5f1f9102483e9405" title="Set the position of the transformable in the Window. " alt="" coords="228,5,403,32"/>
+<area shape="rect" id="node3" href="$classpk_1_1_sprite.html#a82eb525e953c7e8d6dbae42b0fb63f75" title="Used internally when the render mode is initialized or changed. " alt="" coords="236,56,395,83"/>
+</map>

@@ -1,0 +1,442 @@
+D:/Programming/C++/ProtoKludge/include/graphics/GLSprite.hpp:57: warning: Empty prototype found!
+D:/Programming/C++/ProtoKludge/include/utilities/DisplayInfo.hpp:35: warning: Empty prototype found!
+D:/Programming/C++/ProtoKludge/include/core/Window.hpp:34: warning: no matching class member found for 
+  pk::Window::Window(const char *windowTitle, int x, int y, int width, int height, Uint32 windowFlags)
+Possible candidates:
+  pk::Window::Window()
+  pk::Window::Window(const char *windowTitle, glm::ivec2 position, int width, int height, Uint32 windowFlags)
+
+D:/Programming/C++/ProtoKludge/include/core/Window.hpp:60: warning: documented symbol `const SDL_GLContext & pk::Window::getOpenGLContext' was not declared or defined.
+D:/Programming/C++/ProtoKludge/include/core/Window.hpp:157: warning: no uniquely matching class member found for 
+  void pk::Window::draw(pk::GLDrawable &drawable)
+Possible candidates:
+  void pk::Window::draw(GLDrawable &drawable, GLStates &states)' at line 162 of file D:/Programming/C++/ProtoKludge/include/core/Window.hpp
+  void pk::Window::draw(Drawable &drawable)' at line 169 of file D:/Programming/C++/ProtoKludge/include/core/Window.hpp
+  void pk::Window::draw(Drawable *const drawables)' at line 177 of file D:/Programming/C++/ProtoKludge/include/core/Window.hpp
+
+D:/Programming/C++/ProtoKludge/include/graphics/GLDrawable.hpp:20: warning: no matching class member found for 
+  pk::GLDrawable::Drawable()
+
+D:/Programming/C++/ProtoKludge/include/graphics/GLSprite.hpp:39: warning: no matching class member found for 
+  pk::GLSprite::GLSprite(char *path, GLRect rect)
+Possible candidates:
+  pk::GLSprite::GLSprite()
+  pk::GLSprite::GLSprite(GLTexture &t, GLRect rect)
+
+D:/Programming/C++/ProtoKludge/include/graphics/GLSprite.hpp:52: warning: member with no name found.
+D:/Programming/C++/ProtoKludge/include/graphics/GLTexture.hpp:78: warning: no matching class member found for 
+  pk::GLTexture::GLTexture(char *path)
+Possible candidates:
+  pk::GLTexture::GLTexture()
+  pk::GLTexture::GLTexture(std::string path)
+
+D:/Programming/C++/ProtoKludge/include/graphics/GLTransformable.hpp:99: warning: member with no name found.
+D:/Programming/C++/ProtoKludge/include/graphics/Sprite.hpp:50: warning: no matching class member found for 
+  pk::Sprite::Sprite(const pk::Texture &texture)
+Possible candidates:
+  pk::Sprite::Sprite()
+  pk::Sprite::Sprite(Texture *const texture)
+  pk::Sprite::Sprite(Texture *const texture, const SDL_Rect &rect)
+
+D:/Programming/C++/ProtoKludge/include/graphics/Sprite.hpp:57: warning: no matching class member found for 
+  pk::Sprite::Sprite(const pk::Texture &texture, const SDL_Rect &rect)
+Possible candidates:
+  pk::Sprite::Sprite()
+  pk::Sprite::Sprite(Texture *const texture)
+  pk::Sprite::Sprite(Texture *const texture, const SDL_Rect &rect)
+
+D:/Programming/C++/ProtoKludge/include/graphics/Text.hpp:59: warning: no matching class member found for 
+  pk::Text::Text(pk::Font *font)
+Possible candidates:
+  pk::Text::Text()
+  pk::Text::Text(Font *const font, const char *text)
+  pk::Text::Text(Font *const font, Texture *const texture, const char *text)
+  pk::Text::Text(Font *const font, Texture *const texture, const SDL_Rect &rect, const char *text)
+  pk::Text::Text(textData td)
+
+D:/Programming/C++/ProtoKludge/include/graphics/Text.hpp:67: warning: no matching class member found for 
+  pk::Text::Text(const pk::Texture &texture)
+Possible candidates:
+  pk::Text::Text()
+  pk::Text::Text(Font *const font, const char *text)
+  pk::Text::Text(Font *const font, Texture *const texture, const char *text)
+  pk::Text::Text(Font *const font, Texture *const texture, const SDL_Rect &rect, const char *text)
+  pk::Text::Text(textData td)
+
+D:/Programming/C++/ProtoKludge/include/graphics/Text.hpp:76: warning: no matching class member found for 
+  pk::Text::Text(const pk::Texture &texture, const SDL_Rect &rect)
+Possible candidates:
+  pk::Text::Text()
+  pk::Text::Text(Font *const font, const char *text)
+  pk::Text::Text(Font *const font, Texture *const texture, const char *text)
+  pk::Text::Text(Font *const font, Texture *const texture, const SDL_Rect &rect, const char *text)
+  pk::Text::Text(textData td)
+
+D:/Programming/C++/ProtoKludge/include/graphics/Texture.hpp:28: warning: no matching class member found for 
+  bool pk::Texture::loadTexture(const char *path, SDL_Renderer *const renderTarget, int w, int h)
+Possible candidates:
+  bool pk::Texture::loadTexture(const char *path, SDL_Renderer *const renderTarget)
+  bool pk::Texture::loadTexture(SDL_Texture *const texture)
+
+D:/Programming/C++/ProtoKludge/include/utilities/DisplayInfo.hpp:31: warning: member with no name found.
+D:/Programming/C++/ProtoKludge/include/utilities/ImGuiUtilities.hpp:58: warning: member with no name found.
+D:/Programming/C++/ProtoKludge/include/lighting/AmbientLight.hpp:28: warning: argument 'glm' of command @param is not found in the argument list of pk::AmbientLight::AmbientLight(glm::vec4 color, GLfloat ambientIntensity)
+D:/Programming/C++/ProtoKludge/include/lighting/AmbientLight.hpp:28: warning: argument 'vec4' of command @param is not found in the argument list of pk::AmbientLight::AmbientLight(glm::vec4 color, GLfloat ambientIntensity)
+D:/Programming/C++/ProtoKludge/include/lighting/AmbientLight.hpp:28: warning: argument 'GLfloat' of command @param is not found in the argument list of pk::AmbientLight::AmbientLight(glm::vec4 color, GLfloat ambientIntensity)
+D:/Programming/C++/ProtoKludge/include/lighting/AmbientLight.hpp:35: warning: The following parameters of pk::AmbientLight::AmbientLight(glm::vec4 color, GLfloat ambientIntensity) are not documented:
+  parameter 'color'
+  parameter 'ambientIntensity'
+D:/Programming/C++/ProtoKludge/include/lighting/AmbientLight.hpp:41: warning: argument 'GLuint' of command @param is not found in the argument list of pk::AmbientLight::update(GLuint ambientIntensityLocation, GLuint ambientColorLocation)
+D:/Programming/C++/ProtoKludge/include/lighting/AmbientLight.hpp:41: warning: argument 'GLuint' of command @param is not found in the argument list of pk::AmbientLight::update(GLuint ambientIntensityLocation, GLuint ambientColorLocation)
+D:/Programming/C++/ProtoKludge/include/lighting/AmbientLight.hpp:49: warning: The following parameters of pk::AmbientLight::update(GLuint ambientIntensityLocation, GLuint ambientColorLocation) are not documented:
+  parameter 'ambientIntensityLocation'
+  parameter 'ambientColorLocation'
+D:/Programming/C++/ProtoKludge/include/physics/CharacterBody.hpp:95: warning: argument 'bool' of command @param is not found in the argument list of pk::CharacterBody::allowSleep(bool s)
+D:/Programming/C++/ProtoKludge/include/physics/CharacterBody.hpp:101: warning: The following parameters of pk::CharacterBody::allowSleep(bool s) are not documented:
+  parameter 's'
+D:/Programming/C++/ProtoKludge/include/physics/CharacterBody.hpp:46: warning: argument 'float' of command @param is not found in the argument list of pk::CharacterBody::setDensity(float density)
+D:/Programming/C++/ProtoKludge/include/physics/CharacterBody.hpp:49: warning: The following parameters of pk::CharacterBody::setDensity(float density) are not documented:
+  parameter 'density'
+D:/Programming/C++/ProtoKludge/include/physics/CharacterBody.hpp:88: warning: argument 'bool' of command @param is not found in the argument list of pk::CharacterBody::setFixedRotation(bool r)
+D:/Programming/C++/ProtoKludge/include/physics/CharacterBody.hpp:91: warning: The following parameters of pk::CharacterBody::setFixedRotation(bool r) are not documented:
+  parameter 'r'
+D:/Programming/C++/ProtoKludge/include/physics/CharacterBody.hpp:60: warning: argument 'float' of command @param is not found in the argument list of pk::CharacterBody::setFriction(float friction)
+D:/Programming/C++/ProtoKludge/include/physics/CharacterBody.hpp:63: warning: The following parameters of pk::CharacterBody::setFriction(float friction) are not documented:
+  parameter 'friction'
+D:/Programming/C++/ProtoKludge/include/physics/CharacterBody.hpp:147: warning: argument 'glm' of command @param is not found in the argument list of pk::CharacterBody::setLinearVelocity(glm::vec2 v)
+D:/Programming/C++/ProtoKludge/include/physics/CharacterBody.hpp:147: warning: argument 'vec2' of command @param is not found in the argument list of pk::CharacterBody::setLinearVelocity(glm::vec2 v)
+D:/Programming/C++/ProtoKludge/include/physics/CharacterBody.hpp:151: warning: The following parameters of pk::CharacterBody::setLinearVelocity(glm::vec2 v) are not documented:
+  parameter 'v'
+D:/Programming/C++/ProtoKludge/include/physics/CharacterBody.hpp:113: warning: argument 'glm' of command @param is not found in the argument list of pk::CharacterBody::setPosition(glm::vec2 position)
+D:/Programming/C++/ProtoKludge/include/physics/CharacterBody.hpp:113: warning: argument 'vec2' of command @param is not found in the argument list of pk::CharacterBody::setPosition(glm::vec2 position)
+D:/Programming/C++/ProtoKludge/include/physics/CharacterBody.hpp:117: warning: The following parameters of pk::CharacterBody::setPosition(glm::vec2 position) are not documented:
+  parameter 'position'
+D:/Programming/C++/ProtoKludge/include/physics/CharacterBody.hpp:74: warning: argument 'float' of command @param is not found in the argument list of pk::CharacterBody::setRestitution(float restitution)
+D:/Programming/C++/ProtoKludge/include/physics/CharacterBody.hpp:77: warning: The following parameters of pk::CharacterBody::setRestitution(float restitution) are not documented:
+  parameter 'restitution'
+D:/Programming/C++/ProtoKludge/include/physics/CharacterBody.hpp:128: warning: argument 'b2Vec2' of command @param is not found in the argument list of pk::CharacterBody::setTransform(b2Vec2 position, float angle)
+D:/Programming/C++/ProtoKludge/include/physics/CharacterBody.hpp:128: warning: argument 'float' of command @param is not found in the argument list of pk::CharacterBody::setTransform(b2Vec2 position, float angle)
+D:/Programming/C++/ProtoKludge/include/physics/CharacterBody.hpp:135: warning: The following parameters of pk::CharacterBody::setTransform(b2Vec2 position, float angle) are not documented:
+  parameter 'position'
+  parameter 'angle'
+D:/Programming/C++/ProtoKludge/include/lighting/DiffuseLight.hpp:26: warning: argument 'glm' of command @param is not found in the argument list of pk::DiffuseLight::DiffuseLight(glm::vec4 color, GLfloat ambientIntensity, GLfloat x, GLfloat y, GLfloat z, GLfloat diffuseIntensity)
+D:/Programming/C++/ProtoKludge/include/lighting/DiffuseLight.hpp:26: warning: argument 'vec4' of command @param is not found in the argument list of pk::DiffuseLight::DiffuseLight(glm::vec4 color, GLfloat ambientIntensity, GLfloat x, GLfloat y, GLfloat z, GLfloat diffuseIntensity)
+D:/Programming/C++/ProtoKludge/include/lighting/DiffuseLight.hpp:26: warning: argument 'GLfloat' of command @param is not found in the argument list of pk::DiffuseLight::DiffuseLight(glm::vec4 color, GLfloat ambientIntensity, GLfloat x, GLfloat y, GLfloat z, GLfloat diffuseIntensity)
+D:/Programming/C++/ProtoKludge/include/lighting/DiffuseLight.hpp:26: warning: argument 'GLfloat' of command @param is not found in the argument list of pk::DiffuseLight::DiffuseLight(glm::vec4 color, GLfloat ambientIntensity, GLfloat x, GLfloat y, GLfloat z, GLfloat diffuseIntensity)
+D:/Programming/C++/ProtoKludge/include/lighting/DiffuseLight.hpp:26: warning: argument 'GLfloat' of command @param is not found in the argument list of pk::DiffuseLight::DiffuseLight(glm::vec4 color, GLfloat ambientIntensity, GLfloat x, GLfloat y, GLfloat z, GLfloat diffuseIntensity)
+D:/Programming/C++/ProtoKludge/include/lighting/DiffuseLight.hpp:26: warning: argument 'GLfloat' of command @param is not found in the argument list of pk::DiffuseLight::DiffuseLight(glm::vec4 color, GLfloat ambientIntensity, GLfloat x, GLfloat y, GLfloat z, GLfloat diffuseIntensity)
+D:/Programming/C++/ProtoKludge/include/lighting/DiffuseLight.hpp:26: warning: argument 'GLfloat' of command @param is not found in the argument list of pk::DiffuseLight::DiffuseLight(glm::vec4 color, GLfloat ambientIntensity, GLfloat x, GLfloat y, GLfloat z, GLfloat diffuseIntensity)
+D:/Programming/C++/ProtoKludge/include/lighting/DiffuseLight.hpp:38: warning: The following parameters of pk::DiffuseLight::DiffuseLight(glm::vec4 color, GLfloat ambientIntensity, GLfloat x, GLfloat y, GLfloat z, GLfloat diffuseIntensity) are not documented:
+  parameter 'color'
+  parameter 'ambientIntensity'
+  parameter 'x'
+  parameter 'y'
+  parameter 'z'
+  parameter 'diffuseIntensity'
+D:/Programming/C++/ProtoKludge/include/lighting/DiffuseLight.hpp:45: warning: argument 'GLuint' of command @param is not found in the argument list of pk::DiffuseLight::update(GLuint ambientIntensityLocation, GLuint ambientColorLocation, GLuint diffuseIntensityLocation, GLuint directionLocation)
+D:/Programming/C++/ProtoKludge/include/lighting/DiffuseLight.hpp:45: warning: argument 'GLuint' of command @param is not found in the argument list of pk::DiffuseLight::update(GLuint ambientIntensityLocation, GLuint ambientColorLocation, GLuint diffuseIntensityLocation, GLuint directionLocation)
+D:/Programming/C++/ProtoKludge/include/lighting/DiffuseLight.hpp:45: warning: argument 'GLuint' of command @param is not found in the argument list of pk::DiffuseLight::update(GLuint ambientIntensityLocation, GLuint ambientColorLocation, GLuint diffuseIntensityLocation, GLuint directionLocation)
+D:/Programming/C++/ProtoKludge/include/lighting/DiffuseLight.hpp:45: warning: argument 'GLuint' of command @param is not found in the argument list of pk::DiffuseLight::update(GLuint ambientIntensityLocation, GLuint ambientColorLocation, GLuint diffuseIntensityLocation, GLuint directionLocation)
+D:/Programming/C++/ProtoKludge/include/lighting/DiffuseLight.hpp:59: warning: The following parameters of pk::DiffuseLight::update(GLuint ambientIntensityLocation, GLuint ambientColorLocation, GLuint diffuseIntensityLocation, GLuint directionLocation) are not documented:
+  parameter 'ambientIntensityLocation'
+  parameter 'ambientColorLocation'
+  parameter 'diffuseIntensityLocation'
+  parameter 'directionLocation'
+D:/Programming/C++/ProtoKludge/include/graphics/Drawable.hpp:29: warning: argument 'SDL_Renderer' of command @param is not found in the argument list of pk::Drawable::draw(SDL_Renderer *const renderTarget, SDL_Rect *const renderTargetRect)=0
+D:/Programming/C++/ProtoKludge/include/graphics/Drawable.hpp:29: warning: argument 'SDL_Rect' of command @param is not found in the argument list of pk::Drawable::draw(SDL_Renderer *const renderTarget, SDL_Rect *const renderTargetRect)=0
+D:/Programming/C++/ProtoKludge/include/graphics/Drawable.hpp:33: warning: The following parameters of pk::Drawable::draw(SDL_Renderer *const renderTarget, SDL_Rect *const renderTargetRect)=0 are not documented:
+  parameter 'renderTarget'
+  parameter 'renderTargetRect'
+D:/Programming/C++/ProtoKludge/include/physics/DynamicBody.hpp:96: warning: argument 'bool' of command @param is not found in the argument list of pk::DynamicBody::allowSleep(bool s)
+D:/Programming/C++/ProtoKludge/include/physics/DynamicBody.hpp:102: warning: The following parameters of pk::DynamicBody::allowSleep(bool s) are not documented:
+  parameter 's'
+D:/Programming/C++/ProtoKludge/include/physics/DynamicBody.hpp:47: warning: argument 'float' of command @param is not found in the argument list of pk::DynamicBody::setDensity(float density)
+D:/Programming/C++/ProtoKludge/include/physics/DynamicBody.hpp:50: warning: The following parameters of pk::DynamicBody::setDensity(float density) are not documented:
+  parameter 'density'
+D:/Programming/C++/ProtoKludge/include/physics/DynamicBody.hpp:89: warning: argument 'bool' of command @param is not found in the argument list of pk::DynamicBody::setFixedRotation(bool r)
+D:/Programming/C++/ProtoKludge/include/physics/DynamicBody.hpp:92: warning: The following parameters of pk::DynamicBody::setFixedRotation(bool r) are not documented:
+  parameter 'r'
+D:/Programming/C++/ProtoKludge/include/physics/DynamicBody.hpp:61: warning: argument 'float' of command @param is not found in the argument list of pk::DynamicBody::setFriction(float friction)
+D:/Programming/C++/ProtoKludge/include/physics/DynamicBody.hpp:64: warning: The following parameters of pk::DynamicBody::setFriction(float friction) are not documented:
+  parameter 'friction'
+D:/Programming/C++/ProtoKludge/include/physics/DynamicBody.hpp:149: warning: argument 'glm' of command @param is not found in the argument list of pk::DynamicBody::setLinearVelocity(glm::vec2 v)
+D:/Programming/C++/ProtoKludge/include/physics/DynamicBody.hpp:149: warning: argument 'vec2' of command @param is not found in the argument list of pk::DynamicBody::setLinearVelocity(glm::vec2 v)
+D:/Programming/C++/ProtoKludge/include/physics/DynamicBody.hpp:153: warning: The following parameters of pk::DynamicBody::setLinearVelocity(glm::vec2 v) are not documented:
+  parameter 'v'
+D:/Programming/C++/ProtoKludge/include/physics/DynamicBody.hpp:114: warning: argument 'glm' of command @param is not found in the argument list of pk::DynamicBody::setPosition(glm::vec2 position)
+D:/Programming/C++/ProtoKludge/include/physics/DynamicBody.hpp:114: warning: argument 'vec2' of command @param is not found in the argument list of pk::DynamicBody::setPosition(glm::vec2 position)
+D:/Programming/C++/ProtoKludge/include/physics/DynamicBody.hpp:118: warning: The following parameters of pk::DynamicBody::setPosition(glm::vec2 position) are not documented:
+  parameter 'position'
+D:/Programming/C++/ProtoKludge/include/physics/DynamicBody.hpp:75: warning: argument 'float' of command @param is not found in the argument list of pk::DynamicBody::setRestitution(float restitution)
+D:/Programming/C++/ProtoKludge/include/physics/DynamicBody.hpp:78: warning: The following parameters of pk::DynamicBody::setRestitution(float restitution) are not documented:
+  parameter 'restitution'
+D:/Programming/C++/ProtoKludge/include/physics/DynamicBody.hpp:130: warning: argument 'b2Vec2' of command @param is not found in the argument list of pk::DynamicBody::setTransform(b2Vec2 position, float angle)
+D:/Programming/C++/ProtoKludge/include/physics/DynamicBody.hpp:130: warning: argument 'float' of command @param is not found in the argument list of pk::DynamicBody::setTransform(b2Vec2 position, float angle)
+D:/Programming/C++/ProtoKludge/include/physics/DynamicBody.hpp:137: warning: The following parameters of pk::DynamicBody::setTransform(b2Vec2 position, float angle) are not documented:
+  parameter 'position'
+  parameter 'angle'
+D:/Programming/C++/ProtoKludge/include/graphics/Font.hpp:103: warning: argument 'int' of command @param is not found in the argument list of pk::Font::getOutline()
+D:/Programming/C++/ProtoKludge/include/graphics/Font.hpp:30: warning: argument 'const' of command @param is not found in the argument list of pk::Font::loadFont(char *file, int fontSize)
+D:/Programming/C++/ProtoKludge/include/graphics/Font.hpp:30: warning: argument 'int' of command @param is not found in the argument list of pk::Font::loadFont(char *file, int fontSize)
+D:/Programming/C++/ProtoKludge/include/graphics/Font.hpp:35: warning: The following parameters of pk::Font::loadFont(char *file, int fontSize) are not documented:
+  parameter 'file'
+  parameter 'fontSize'
+D:/Programming/C++/ProtoKludge/include/graphics/Font.hpp:39: warning: argument 'TTF_Font' of command @param is not found in the argument list of pk::Font::setFont(TTF_Font *font)
+D:/Programming/C++/ProtoKludge/include/graphics/Font.hpp:42: warning: The following parameters of pk::Font::setFont(TTF_Font *font) are not documented:
+  parameter 'font'
+D:/Programming/C++/ProtoKludge/include/graphics/Font.hpp:131: warning: argument 'int' of command @param is not found in the argument list of pk::Font::setFontSize(int s)
+D:/Programming/C++/ProtoKludge/include/graphics/Font.hpp:134: warning: The following parameters of pk::Font::setFontSize(int s) are not documented:
+  parameter 's'
+D:/Programming/C++/ProtoKludge/include/graphics/Font.hpp:117: warning: argument 'int' of command @param is not found in the argument list of pk::Font::setFontStyle(int style)
+D:/Programming/C++/ProtoKludge/include/graphics/Font.hpp:120: warning: The following parameters of pk::Font::setFontStyle(int style) are not documented:
+  parameter 'style'
+D:/Programming/C++/ProtoKludge/include/graphics/Font.hpp:83: warning: argument 'Uint32' of command @param is not found in the argument list of pk::Font::setHinting(Uint32 hinting)
+D:/Programming/C++/ProtoKludge/include/graphics/Font.hpp:86: warning: The following parameters of pk::Font::setHinting(Uint32 hinting) are not documented:
+  parameter 'hinting'
+D:/Programming/C++/ProtoKludge/include/graphics/Font.hpp:110: warning: argument 'int' of command @param is not found in the argument list of pk::Font::setOutline(int outline)
+D:/Programming/C++/ProtoKludge/include/graphics/Font.hpp:113: warning: The following parameters of pk::Font::setOutline(int outline) are not documented:
+  parameter 'outline'
+D:/Programming/C++/ProtoKludge/include/core/Game.hpp:155: warning: argument 'int' of command @param is not found in the argument list of pk::Game::setMusicVolume(int v)
+D:/Programming/C++/ProtoKludge/include/core/Game.hpp:158: warning: The following parameters of pk::Game::setMusicVolume(int v) are not documented:
+  parameter 'v'
+D:/Programming/C++/ProtoKludge/include/core/Game.hpp:143: warning: argument 'glm' of command @param is not found in the argument list of pk::Game::setScalingFactor(glm::vec2 f)
+D:/Programming/C++/ProtoKludge/include/core/Game.hpp:143: warning: argument 'vec2' of command @param is not found in the argument list of pk::Game::setScalingFactor(glm::vec2 f)
+D:/Programming/C++/ProtoKludge/include/core/Game.hpp:146: warning: The following parameters of pk::Game::setScalingFactor(glm::vec2 f) are not documented:
+  parameter 'f'
+D:/Programming/C++/ProtoKludge/include/core/Game.hpp:168: warning: argument 'int' of command @param is not found in the argument list of pk::Game::setSoundEffectVolume(int v)
+D:/Programming/C++/ProtoKludge/include/core/Game.hpp:171: warning: The following parameters of pk::Game::setSoundEffectVolume(int v) are not documented:
+  parameter 'v'
+D:/Programming/C++/ProtoKludge/include/core/GameController.hpp:84: warning: argument 'int' of command @param is not found in the argument list of pk::GameController::GameController(int id)
+D:/Programming/C++/ProtoKludge/include/core/GameController.hpp:90: warning: The following parameters of pk::GameController::GameController(int id) are not documented:
+  parameter 'id'
+D:/Programming/C++/ProtoKludge/include/core/GameController.hpp:136: warning: argument 'int' of command @param is not found in the argument list of pk::GameController::getAxisState(int axis)
+D:/Programming/C++/ProtoKludge/include/core/GameController.hpp:145: warning: The following parameters of pk::GameController::getAxisState(int axis) are not documented:
+  parameter 'axis'
+D:/Programming/C++/ProtoKludge/include/core/GameController.hpp:149: warning: argument 'int' of command @param is not found in the argument list of pk::GameController::getButtonState(int button)
+D:/Programming/C++/ProtoKludge/include/core/GameController.hpp:158: warning: The following parameters of pk::GameController::getButtonState(int button) are not documented:
+  parameter 'button'
+D:/Programming/C++/ProtoKludge/include/core/GameController.hpp:120: warning: argument 'int' of command @param is not found in the argument list of pk::GameController::setDeadZone(int deadzone)
+D:/Programming/C++/ProtoKludge/include/core/GameController.hpp:124: warning: The following parameters of pk::GameController::setDeadZone(int deadzone) are not documented:
+  parameter 'deadzone'
+D:/Programming/C++/ProtoKludge/include/graphics/GLDrawable.hpp:30: warning: argument 'GLStates' of command @param is not found in the argument list of pk::GLDrawable::draw(GLStates &states)=0
+D:/Programming/C++/ProtoKludge/include/graphics/GLDrawable.hpp:33: warning: The following parameters of pk::GLDrawable::draw(GLStates &states)=0 are not documented:
+  parameter 'states'
+D:/Programming/C++/ProtoKludge/include/graphics/GLSprite.hpp:94: warning: argument 'GLStates' of command @param is not found in the argument list of pk::GLSprite::draw(GLStates &states)
+D:/Programming/C++/ProtoKludge/include/graphics/GLSprite.hpp:98: warning: The following parameters of pk::GLSprite::draw(GLStates &states) are not documented:
+  parameter 'states'
+D:/Programming/C++/ProtoKludge/include/graphics/GLTexture.hpp:104: warning: argument 'GLint' of command @param is not found in the argument list of pk::GLTexture::setTextureCoordinateWrapParameters(GLint S, GLint T, GLint R)
+D:/Programming/C++/ProtoKludge/include/graphics/GLTexture.hpp:104: warning: argument 'GLint' of command @param is not found in the argument list of pk::GLTexture::setTextureCoordinateWrapParameters(GLint S, GLint T, GLint R)
+D:/Programming/C++/ProtoKludge/include/graphics/GLTexture.hpp:104: warning: argument 'GLint' of command @param is not found in the argument list of pk::GLTexture::setTextureCoordinateWrapParameters(GLint S, GLint T, GLint R)
+D:/Programming/C++/ProtoKludge/include/graphics/GLTexture.hpp:110: warning: The following parameters of pk::GLTexture::setTextureCoordinateWrapParameters(GLint S, GLint T, GLint R) are not documented:
+  parameter 'S'
+  parameter 'T'
+  parameter 'R'
+D:/Programming/C++/ProtoKludge/include/graphics/GLTexture.hpp:114: warning: argument 'GLint' of command @param is not found in the argument list of pk::GLTexture::setTextureFilterParameters(GLint min, GLint mag)
+D:/Programming/C++/ProtoKludge/include/graphics/GLTexture.hpp:114: warning: argument 'GLint' of command @param is not found in the argument list of pk::GLTexture::setTextureFilterParameters(GLint min, GLint mag)
+D:/Programming/C++/ProtoKludge/include/graphics/GLTexture.hpp:119: warning: The following parameters of pk::GLTexture::setTextureFilterParameters(GLint min, GLint mag) are not documented:
+  parameter 'min'
+  parameter 'mag'
+D:/Programming/C++/ProtoKludge/include/graphics/GLTexture.hpp:96: warning: argument 'GLRect' of command @param is not found in the argument list of pk::GLTexture::setTextureRect(GLRect rect)
+D:/Programming/C++/ProtoKludge/include/graphics/GLTexture.hpp:100: warning: The following parameters of pk::GLTexture::setTextureRect(GLRect rect) are not documented:
+  parameter 'rect'
+D:/Programming/C++/ProtoKludge/include/graphics/GLTransformable.hpp:157: warning: argument 'glm' of command @param is not found in the argument list of pk::GLTransformable::move(glm::vec2 offset)
+D:/Programming/C++/ProtoKludge/include/graphics/GLTransformable.hpp:157: warning: argument 'vec2' of command @param is not found in the argument list of pk::GLTransformable::move(glm::vec2 offset)
+D:/Programming/C++/ProtoKludge/include/graphics/GLTransformable.hpp:163: warning: The following parameters of pk::GLTransformable::move(glm::vec2 offset) are not documented:
+  parameter 'offset'
+D:/Programming/C++/ProtoKludge/include/graphics/GLTransformable.hpp:184: warning: argument 'float' of command @param is not found in the argument list of pk::GLTransformable::rotate(float degrees)
+D:/Programming/C++/ProtoKludge/include/graphics/GLTransformable.hpp:190: warning: The following parameters of pk::GLTransformable::rotate(float degrees) are not documented:
+  parameter 'degrees'
+D:/Programming/C++/ProtoKludge/include/graphics/GLTransformable.hpp:209: warning: argument 'glm' of command @param is not found in the argument list of pk::GLTransformable::scale(glm::vec2 scale)
+D:/Programming/C++/ProtoKludge/include/graphics/GLTransformable.hpp:209: warning: argument 'vec2' of command @param is not found in the argument list of pk::GLTransformable::scale(glm::vec2 scale)
+D:/Programming/C++/ProtoKludge/include/graphics/GLTransformable.hpp:214: warning: The following parameters of pk::GLTransformable::scale(glm::vec2 scale) are not documented:
+  parameter 'scale'
+D:/Programming/C++/ProtoKludge/include/graphics/GLTransformable.hpp:167: warning: argument 'float' of command @param is not found in the argument list of pk::GLTransformable::setAngle(float angle)
+D:/Programming/C++/ProtoKludge/include/graphics/GLTransformable.hpp:172: warning: The following parameters of pk::GLTransformable::setAngle(float angle) are not documented:
+  parameter 'angle'
+D:/Programming/C++/ProtoKludge/include/graphics/GLTransformable.hpp:117: warning: argument 'glm' of command @param is not found in the argument list of pk::GLTransformable::setOrigin(glm::vec2 origin)
+D:/Programming/C++/ProtoKludge/include/graphics/GLTransformable.hpp:117: warning: argument 'vec2' of command @param is not found in the argument list of pk::GLTransformable::setOrigin(glm::vec2 origin)
+D:/Programming/C++/ProtoKludge/include/graphics/GLTransformable.hpp:123: warning: The following parameters of pk::GLTransformable::setOrigin(glm::vec2 origin) are not documented:
+  parameter 'origin'
+D:/Programming/C++/ProtoKludge/include/graphics/GLTransformable.hpp:137: warning: argument 'glm' of command @param is not found in the argument list of pk::GLTransformable::setPosition(glm::vec2 position)
+D:/Programming/C++/ProtoKludge/include/graphics/GLTransformable.hpp:137: warning: argument 'vec2' of command @param is not found in the argument list of pk::GLTransformable::setPosition(glm::vec2 position)
+D:/Programming/C++/ProtoKludge/include/graphics/GLTransformable.hpp:143: warning: The following parameters of pk::GLTransformable::setPosition(glm::vec2 position) are not documented:
+  parameter 'position'
+D:/Programming/C++/ProtoKludge/include/graphics/GLTransformable.hpp:65: warning: argument 'GLRect' of command @param is not found in the argument list of pk::GLTransformable::setRect(GLRect r)
+D:/Programming/C++/ProtoKludge/include/graphics/GLTransformable.hpp:71: warning: The following parameters of pk::GLTransformable::setRect(GLRect r) are not documented:
+  parameter 'r'
+D:/Programming/C++/ProtoKludge/include/graphics/GLTransformable.hpp:194: warning: argument 'glm' of command @param is not found in the argument list of pk::GLTransformable::setScale(glm::vec2 scale)
+D:/Programming/C++/ProtoKludge/include/graphics/GLTransformable.hpp:194: warning: argument 'vec2' of command @param is not found in the argument list of pk::GLTransformable::setScale(glm::vec2 scale)
+D:/Programming/C++/ProtoKludge/include/graphics/GLTransformable.hpp:198: warning: The following parameters of pk::GLTransformable::setScale(glm::vec2 scale) are not documented:
+  parameter 'scale'
+D:/Programming/C++/ProtoKludge/include/graphics/GLTransformable.hpp:84: warning: argument 'GLfloat' of command @param is not found in the argument list of pk::GLTransformable::setWidth(GLfloat w)
+D:/Programming/C++/ProtoKludge/include/graphics/GLTransformable.hpp:88: warning: The following parameters of pk::GLTransformable::setWidth(GLfloat w) are not documented:
+  parameter 'w'
+D:/Programming/C++/ProtoKludge/include/physics/KinematicBody.hpp:97: warning: argument 'bool' of command @param is not found in the argument list of pk::KinematicBody::allowSleep(bool s)
+D:/Programming/C++/ProtoKludge/include/physics/KinematicBody.hpp:103: warning: The following parameters of pk::KinematicBody::allowSleep(bool s) are not documented:
+  parameter 's'
+D:/Programming/C++/ProtoKludge/include/physics/KinematicBody.hpp:48: warning: argument 'float' of command @param is not found in the argument list of pk::KinematicBody::setDensity(float density)
+D:/Programming/C++/ProtoKludge/include/physics/KinematicBody.hpp:51: warning: The following parameters of pk::KinematicBody::setDensity(float density) are not documented:
+  parameter 'density'
+D:/Programming/C++/ProtoKludge/include/physics/KinematicBody.hpp:90: warning: argument 'bool' of command @param is not found in the argument list of pk::KinematicBody::setFixedRotation(bool r)
+D:/Programming/C++/ProtoKludge/include/physics/KinematicBody.hpp:93: warning: The following parameters of pk::KinematicBody::setFixedRotation(bool r) are not documented:
+  parameter 'r'
+D:/Programming/C++/ProtoKludge/include/physics/KinematicBody.hpp:62: warning: argument 'float' of command @param is not found in the argument list of pk::KinematicBody::setFriction(float friction)
+D:/Programming/C++/ProtoKludge/include/physics/KinematicBody.hpp:65: warning: The following parameters of pk::KinematicBody::setFriction(float friction) are not documented:
+  parameter 'friction'
+D:/Programming/C++/ProtoKludge/include/physics/KinematicBody.hpp:150: warning: argument 'glm' of command @param is not found in the argument list of pk::KinematicBody::setLinearVelocity(glm::vec2 v)
+D:/Programming/C++/ProtoKludge/include/physics/KinematicBody.hpp:150: warning: argument 'vec2' of command @param is not found in the argument list of pk::KinematicBody::setLinearVelocity(glm::vec2 v)
+D:/Programming/C++/ProtoKludge/include/physics/KinematicBody.hpp:154: warning: The following parameters of pk::KinematicBody::setLinearVelocity(glm::vec2 v) are not documented:
+  parameter 'v'
+D:/Programming/C++/ProtoKludge/include/physics/KinematicBody.hpp:115: warning: argument 'glm' of command @param is not found in the argument list of pk::KinematicBody::setPosition(glm::vec2 position)
+D:/Programming/C++/ProtoKludge/include/physics/KinematicBody.hpp:115: warning: argument 'vec2' of command @param is not found in the argument list of pk::KinematicBody::setPosition(glm::vec2 position)
+D:/Programming/C++/ProtoKludge/include/physics/KinematicBody.hpp:119: warning: The following parameters of pk::KinematicBody::setPosition(glm::vec2 position) are not documented:
+  parameter 'position'
+D:/Programming/C++/ProtoKludge/include/physics/KinematicBody.hpp:76: warning: argument 'float' of command @param is not found in the argument list of pk::KinematicBody::setRestitution(float restitution)
+D:/Programming/C++/ProtoKludge/include/physics/KinematicBody.hpp:79: warning: The following parameters of pk::KinematicBody::setRestitution(float restitution) are not documented:
+  parameter 'restitution'
+D:/Programming/C++/ProtoKludge/include/physics/KinematicBody.hpp:131: warning: argument 'b2Vec2' of command @param is not found in the argument list of pk::KinematicBody::setTransform(b2Vec2 position, float angle)
+D:/Programming/C++/ProtoKludge/include/physics/KinematicBody.hpp:131: warning: argument 'float' of command @param is not found in the argument list of pk::KinematicBody::setTransform(b2Vec2 position, float angle)
+D:/Programming/C++/ProtoKludge/include/physics/KinematicBody.hpp:138: warning: The following parameters of pk::KinematicBody::setTransform(b2Vec2 position, float angle) are not documented:
+  parameter 'position'
+  parameter 'angle'
+D:/Programming/C++/ProtoKludge/include/graphics/Mesh.hpp:45: warning: argument 'GLStates' of command @param is not found in the argument list of pk::Mesh::draw(GLStates &states)
+D:/Programming/C++/ProtoKludge/include/graphics/Mesh.hpp:49: warning: The following parameters of pk::Mesh::draw(GLStates &states) are not documented:
+  parameter 'states'
+D:/Programming/C++/ProtoKludge/include/physics/MovingPlaform.hpp:38: warning: argument 'float' of command @param is not found in the argument list of pk::MovingPlaform::setPlatformSpeed(float speed)
+D:/Programming/C++/ProtoKludge/include/physics/MovingPlaform.hpp:42: warning: The following parameters of pk::MovingPlaform::setPlatformSpeed(float speed) are not documented:
+  parameter 'speed'
+D:/Programming/C++/ProtoKludge/include/graphics/RectangleShape.hpp:45: warning: argument 'GLfloat' of command @param is not found in the argument list of pk::RectangleShape::RectangleShape(GLfloat width, GLfloat height)
+D:/Programming/C++/ProtoKludge/include/graphics/RectangleShape.hpp:45: warning: argument 'GLfloat' of command @param is not found in the argument list of pk::RectangleShape::RectangleShape(GLfloat width, GLfloat height)
+D:/Programming/C++/ProtoKludge/include/graphics/RectangleShape.hpp:52: warning: The following parameters of pk::RectangleShape::RectangleShape(GLfloat width, GLfloat height) are not documented:
+  parameter 'width'
+  parameter 'height'
+D:/Programming/C++/ProtoKludge/include/graphics/RectangleShape.hpp:90: warning: argument 'GLStates' of command @param is not found in the argument list of pk::RectangleShape::draw(GLStates &states)
+D:/Programming/C++/ProtoKludge/include/graphics/RectangleShape.hpp:94: warning: The following parameters of pk::RectangleShape::draw(GLStates &states) are not documented:
+  parameter 'states'
+D:/Programming/C++/ProtoKludge/include/states/ScreenState.hpp:48: warning: argument 'Uint32' of command @param is not found in the argument list of pk::ScreenState::setState(Uint32 state)
+D:/Programming/C++/ProtoKludge/include/states/ScreenState.hpp:51: warning: The following parameters of pk::ScreenState::setState(Uint32 state) are not documented:
+  parameter 'state'
+D:/Programming/C++/ProtoKludge/include/graphics/Shader.hpp:68: warning: argument 'const' of command @param is not found in the argument list of pk::Shader::load(const char *vertexLocation, const char *fragmentLocation)
+D:/Programming/C++/ProtoKludge/include/graphics/Shader.hpp:68: warning: argument 'const' of command @param is not found in the argument list of pk::Shader::load(const char *vertexLocation, const char *fragmentLocation)
+D:/Programming/C++/ProtoKludge/include/graphics/Shader.hpp:73: warning: The following parameters of pk::Shader::load(const char *vertexLocation, const char *fragmentLocation) are not documented:
+  parameter 'vertexLocation'
+  parameter 'fragmentLocation'
+D:/Programming/C++/ProtoKludge/include/graphics/Shader.hpp:59: warning: argument 'const' of command @param is not found in the argument list of pk::Shader::loadFromString(const char *vertexCode, const char *fragmentCode)
+D:/Programming/C++/ProtoKludge/include/graphics/Shader.hpp:59: warning: argument 'const' of command @param is not found in the argument list of pk::Shader::loadFromString(const char *vertexCode, const char *fragmentCode)
+D:/Programming/C++/ProtoKludge/include/graphics/Shader.hpp:64: warning: The following parameters of pk::Shader::loadFromString(const char *vertexCode, const char *fragmentCode) are not documented:
+  parameter 'vertexCode'
+  parameter 'fragmentCode'
+D:/Programming/C++/ProtoKludge/include/graphics/Sprite.hpp:145: warning: argument 'SDL_Renderer' of command @param is not found in the argument list of pk::Sprite::draw(SDL_Renderer *const renderTarget, SDL_Rect *const renderTargetRect)
+D:/Programming/C++/ProtoKludge/include/graphics/Sprite.hpp:145: warning: argument 'SDL_Rect' of command @param is not found in the argument list of pk::Sprite::draw(SDL_Renderer *const renderTarget, SDL_Rect *const renderTargetRect)
+D:/Programming/C++/ProtoKludge/include/graphics/Sprite.hpp:149: warning: The following parameters of pk::Sprite::draw(SDL_Renderer *const renderTarget, SDL_Rect *const renderTargetRect) are not documented:
+  parameter 'renderTarget'
+  parameter 'renderTargetRect'
+D:/Programming/C++/ProtoKludge/include/graphics/Sprite.hpp:95: warning: argument 'SDL_Rect' of command @param is not found in the argument list of pk::Sprite::setBoundsRect(SDL_Rect &rect)
+D:/Programming/C++/ProtoKludge/include/graphics/Sprite.hpp:98: warning: The following parameters of pk::Sprite::setBoundsRect(SDL_Rect &rect) are not documented:
+  parameter 'rect'
+D:/Programming/C++/ProtoKludge/include/graphics/Sprite.hpp:131: warning: argument 'SDL_RendererFlip' of command @param is not found in the argument list of pk::Sprite::setFlip(SDL_RendererFlip &type)
+D:/Programming/C++/ProtoKludge/include/graphics/Sprite.hpp:134: warning: The following parameters of pk::Sprite::setFlip(SDL_RendererFlip &type) are not documented:
+  parameter 'type'
+D:/Programming/C++/ProtoKludge/include/graphics/Sprite.hpp:68: warning: argument 'spriteData' of command @param is not found in the argument list of pk::Sprite::setSpriteData(spriteData &s)
+D:/Programming/C++/ProtoKludge/include/graphics/Sprite.hpp:71: warning: The following parameters of pk::Sprite::setSpriteData(spriteData &s) are not documented:
+  parameter 's'
+D:/Programming/C++/ProtoKludge/include/graphics/Sprite.hpp:82: warning: argument 'Texture' of command @param is not found in the argument list of pk::Sprite::setTexture(Texture *const texture)
+D:/Programming/C++/ProtoKludge/include/graphics/Sprite.hpp:85: warning: The following parameters of pk::Sprite::setTexture(Texture *const texture) are not documented:
+  parameter 'texture'
+D:/Programming/C++/ProtoKludge/include/graphics/Text.hpp:87: warning: argument 'textData' of command @param is not found in the argument list of pk::Text::Text(textData td)
+D:/Programming/C++/ProtoKludge/include/graphics/Text.hpp:90: warning: The following parameters of pk::Text::Text(textData td) are not documented:
+  parameter 'td'
+D:/Programming/C++/ProtoKludge/include/graphics/Text.hpp:269: warning: argument 'SDL_Renderer' of command @param is not found in the argument list of pk::Text::draw(SDL_Renderer *const renderTarget, SDL_Rect *const renderTargetRect)
+D:/Programming/C++/ProtoKludge/include/graphics/Text.hpp:269: warning: argument 'SDL_Rect' of command @param is not found in the argument list of pk::Text::draw(SDL_Renderer *const renderTarget, SDL_Rect *const renderTargetRect)
+D:/Programming/C++/ProtoKludge/include/graphics/Text.hpp:273: warning: The following parameters of pk::Text::draw(SDL_Renderer *const renderTarget, SDL_Rect *const renderTargetRect) are not documented:
+  parameter 'renderTarget'
+  parameter 'renderTargetRect'
+D:/Programming/C++/ProtoKludge/include/graphics/Text.hpp:197: warning: argument 'SDL_Color' of command @param is not found in the argument list of pk::Text::setBackgroundColor(SDL_Color c)
+D:/Programming/C++/ProtoKludge/include/graphics/Text.hpp:200: warning: The following parameters of pk::Text::setBackgroundColor(SDL_Color c) are not documented:
+  parameter 'c'
+D:/Programming/C++/ProtoKludge/include/graphics/Text.hpp:138: warning: argument 'SDL_Rect' of command @param is not found in the argument list of pk::Text::setBoundsRect(SDL_Rect &rect)
+D:/Programming/C++/ProtoKludge/include/graphics/Text.hpp:141: warning: The following parameters of pk::Text::setBoundsRect(SDL_Rect &rect) are not documented:
+  parameter 'rect'
+D:/Programming/C++/ProtoKludge/include/graphics/Text.hpp:237: warning: argument 'SDL_Point' of command @param is not found in the argument list of pk::Text::setCenter(SDL_Point &point)
+D:/Programming/C++/ProtoKludge/include/graphics/Text.hpp:240: warning: The following parameters of pk::Text::setCenter(SDL_Point &point) are not documented:
+  parameter 'point'
+D:/Programming/C++/ProtoKludge/include/graphics/Text.hpp:183: warning: argument 'const' of command @param is not found in the argument list of pk::Text::setColor(const SDL_Color &color)
+D:/Programming/C++/ProtoKludge/include/graphics/Text.hpp:186: warning: The following parameters of pk::Text::setColor(const SDL_Color &color) are not documented:
+  parameter 'color'
+D:/Programming/C++/ProtoKludge/include/graphics/Text.hpp:255: warning: argument 'SDL_RendererFlip' of command @param is not found in the argument list of pk::Text::setFlip(SDL_RendererFlip &type)
+D:/Programming/C++/ProtoKludge/include/graphics/Text.hpp:258: warning: The following parameters of pk::Text::setFlip(SDL_RendererFlip &type) are not documented:
+  parameter 'type'
+D:/Programming/C++/ProtoKludge/include/graphics/Text.hpp:110: warning: argument 'Font' of command @param is not found in the argument list of pk::Text::setFont(Font *const font)
+D:/Programming/C++/ProtoKludge/include/graphics/Text.hpp:113: warning: The following parameters of pk::Text::setFont(Font *const font) are not documented:
+  parameter 'font'
+D:/Programming/C++/ProtoKludge/include/graphics/Text.hpp:223: warning: argument 'Uint32' of command @param is not found in the argument list of pk::Text::setRenderMode(Uint32 mode, Uint32 length=0)
+D:/Programming/C++/ProtoKludge/include/graphics/Text.hpp:226: warning: The following parameters of pk::Text::setRenderMode(Uint32 mode, Uint32 length=0) are not documented:
+  parameter 'mode'
+  parameter 'length'
+D:/Programming/C++/ProtoKludge/include/graphics/Text.hpp:169: warning: argument 'const' of command @param is not found in the argument list of pk::Text::setString(const char *str)
+D:/Programming/C++/ProtoKludge/include/graphics/Text.hpp:172: warning: The following parameters of pk::Text::setString(const char *str) are not documented:
+  parameter 'str'
+D:/Programming/C++/ProtoKludge/include/graphics/Text.hpp:96: warning: argument 'textData' of command @param is not found in the argument list of pk::Text::setTextData(textData &t)
+D:/Programming/C++/ProtoKludge/include/graphics/Text.hpp:99: warning: The following parameters of pk::Text::setTextData(textData &t) are not documented:
+  parameter 't'
+D:/Programming/C++/ProtoKludge/include/graphics/Text.hpp:124: warning: argument 'Texture' of command @param is not found in the argument list of pk::Text::setTexture(Texture *const texture)
+D:/Programming/C++/ProtoKludge/include/graphics/Text.hpp:127: warning: The following parameters of pk::Text::setTexture(Texture *const texture) are not documented:
+  parameter 'texture'
+D:/Programming/C++/ProtoKludge/include/graphics/Texture.hpp:37: warning: argument 'SDL_Texture' of command @param is not found in the argument list of pk::Texture::loadTexture(SDL_Texture *const texture)
+D:/Programming/C++/ProtoKludge/include/graphics/Texture.hpp:40: warning: The following parameters of pk::Texture::loadTexture(SDL_Texture *const texture) are not documented:
+  parameter 'texture'
+D:/Programming/C++/ProtoKludge/include/graphics/Transform.hpp:67: warning: argument 'float' of command @param is not found in the argument list of pk::Transform::setAngle(float angle)
+D:/Programming/C++/ProtoKludge/include/graphics/Transform.hpp:70: warning: The following parameters of pk::Transform::setAngle(float angle) are not documented:
+  parameter 'angle'
+D:/Programming/C++/ProtoKludge/include/graphics/Transform.hpp:53: warning: argument 'glm' of command @param is not found in the argument list of pk::Transform::setCenter(glm::vec2 &point)
+D:/Programming/C++/ProtoKludge/include/graphics/Transform.hpp:53: warning: argument 'vec2' of command @param is not found in the argument list of pk::Transform::setCenter(glm::vec2 &point)
+D:/Programming/C++/ProtoKludge/include/graphics/Transform.hpp:56: warning: The following parameters of pk::Transform::setCenter(glm::vec2 &point) are not documented:
+  parameter 'point'
+D:/Programming/C++/ProtoKludge/include/graphics/Transform.hpp:81: warning: argument 'glm' of command @param is not found in the argument list of pk::Transform::setPosition(glm::vec2 position)
+D:/Programming/C++/ProtoKludge/include/graphics/Transform.hpp:81: warning: argument 'ivec2' of command @param is not found in the argument list of pk::Transform::setPosition(glm::vec2 position)
+D:/Programming/C++/ProtoKludge/include/graphics/Transform.hpp:84: warning: The following parameters of pk::Transform::setPosition(glm::vec2 position) are not documented:
+  parameter 'position'
+D:/Programming/C++/ProtoKludge/include/graphics/Transform.hpp:39: warning: argument 'transformData' of command @param is not found in the argument list of pk::Transform::setTransformData(transformData &t)
+D:/Programming/C++/ProtoKludge/include/graphics/Transform.hpp:42: warning: The following parameters of pk::Transform::setTransformData(transformData &t) are not documented:
+  parameter 't'
+D:/Programming/C++/ProtoKludge/include/graphics/TriangleShape.hpp:42: warning: argument 'GLfloat' of command @param is not found in the argument list of pk::TriangleShape::TriangleShape(GLfloat width, GLfloat height)
+D:/Programming/C++/ProtoKludge/include/graphics/TriangleShape.hpp:42: warning: argument 'GLfloat' of command @param is not found in the argument list of pk::TriangleShape::TriangleShape(GLfloat width, GLfloat height)
+D:/Programming/C++/ProtoKludge/include/graphics/TriangleShape.hpp:49: warning: The following parameters of pk::TriangleShape::TriangleShape(GLfloat width, GLfloat height) are not documented:
+  parameter 'width'
+  parameter 'height'
+D:/Programming/C++/ProtoKludge/include/graphics/TriangleShape.hpp:87: warning: argument 'GLStates' of command @param is not found in the argument list of pk::TriangleShape::draw(GLStates &states)
+D:/Programming/C++/ProtoKludge/include/graphics/TriangleShape.hpp:91: warning: The following parameters of pk::TriangleShape::draw(GLStates &states) are not documented:
+  parameter 'states'
+D:/Programming/C++/ProtoKludge/include/core/Window.hpp:181: warning: argument 'glm' of command @param is not found in the argument list of pk::Window::clear(glm::ivec4 color=glm::ivec4())
+D:/Programming/C++/ProtoKludge/include/core/Window.hpp:181: warning: argument 'ivec4' of command @param is not found in the argument list of pk::Window::clear(glm::ivec4 color=glm::ivec4())
+D:/Programming/C++/ProtoKludge/include/core/Window.hpp:185: warning: The following parameters of pk::Window::clear(glm::ivec4 color=glm::ivec4()) are not documented:
+  parameter 'color'
+D:/Programming/C++/ProtoKludge/include/core/Window.hpp:166: warning: argument 'Drawable' of command @param is not found in the argument list of pk::Window::draw(Drawable &drawable)
+D:/Programming/C++/ProtoKludge/include/core/Window.hpp:169: warning: The following parameters of pk::Window::draw(Drawable &drawable) are not documented:
+  parameter 'drawable'
+D:/Programming/C++/ProtoKludge/include/core/Window.hpp:173: warning: argument 'Drawable' of command @param is not found in the argument list of pk::Window::draw(Drawable *const drawables)
+D:/Programming/C++/ProtoKludge/include/core/Window.hpp:177: warning: The following parameters of pk::Window::draw(Drawable *const drawables) are not documented:
+  parameter 'drawables'
+D:/Programming/C++/ProtoKludge/include/core/Window.hpp:124: warning: argument 'const' of command @param is not found in the argument list of pk::Window::setFlags(const Uint32 &flags)
+D:/Programming/C++/ProtoKludge/include/core/Window.hpp:124: warning: argument 'Uint32' of command @param is not found in the argument list of pk::Window::setFlags(const Uint32 &flags)
+D:/Programming/C++/ProtoKludge/include/core/Window.hpp:127: warning: The following parameters of pk::Window::setFlags(const Uint32 &flags) are not documented:
+  parameter 'flags'
+D:/Programming/C++/ProtoKludge/include/core/Window.hpp:95: warning: argument 'glm' of command @param is not found in the argument list of pk::Window::setPosition(glm::ivec2 position)
+D:/Programming/C++/ProtoKludge/include/core/Window.hpp:95: warning: argument 'ivec2' of command @param is not found in the argument list of pk::Window::setPosition(glm::ivec2 position)
+D:/Programming/C++/ProtoKludge/include/core/Window.hpp:99: warning: The following parameters of pk::Window::setPosition(glm::ivec2 position) are not documented:
+  parameter 'position'
+D:/Programming/C++/ProtoKludge/include/core/Window.hpp:137: warning: argument 'SDL_Rect' of command @param is not found in the argument list of pk::Window::setWindowRect(SDL_Rect &rect)
+D:/Programming/C++/ProtoKludge/include/core/Window.hpp:140: warning: The following parameters of pk::Window::setWindowRect(SDL_Rect &rect) are not documented:
+  parameter 'rect'
+D:/Programming/C++/ProtoKludge/include/utilities/ImGuiUtilities.hpp:27: warning: argument 'std' of command @param is not found in the argument list of pk::ImGuiUtilities::removeDuplicates(std::vector< std::string > &vec)
+D:/Programming/C++/ProtoKludge/include/utilities/ImGuiUtilities.hpp:27: warning: argument 'vector' of command @param is not found in the argument list of pk::ImGuiUtilities::removeDuplicates(std::vector< std::string > &vec)
+D:/Programming/C++/ProtoKludge/include/utilities/ImGuiUtilities.hpp:27: warning: argument 'std' of command @param is not found in the argument list of pk::ImGuiUtilities::removeDuplicates(std::vector< std::string > &vec)
+D:/Programming/C++/ProtoKludge/include/utilities/ImGuiUtilities.hpp:27: warning: argument 'string' of command @param is not found in the argument list of pk::ImGuiUtilities::removeDuplicates(std::vector< std::string > &vec)
+D:/Programming/C++/ProtoKludge/include/utilities/ImGuiUtilities.hpp:33: warning: The following parameters of pk::ImGuiUtilities::removeDuplicates(std::vector< std::string > &vec) are not documented:
+  parameter 'vec'
+D:/Programming/C++/ProtoKludge/include/utilities/ImGuiUtilities.hpp:14: warning: argument 'std' of command @param is not found in the argument list of pk::ImGuiUtilities::removeDuplicatesSorted(std::vector< std::string > &vec)
+D:/Programming/C++/ProtoKludge/include/utilities/ImGuiUtilities.hpp:14: warning: argument 'vector' of command @param is not found in the argument list of pk::ImGuiUtilities::removeDuplicatesSorted(std::vector< std::string > &vec)
+D:/Programming/C++/ProtoKludge/include/utilities/ImGuiUtilities.hpp:14: warning: argument 'std' of command @param is not found in the argument list of pk::ImGuiUtilities::removeDuplicatesSorted(std::vector< std::string > &vec)
+D:/Programming/C++/ProtoKludge/include/utilities/ImGuiUtilities.hpp:14: warning: argument 'string' of command @param is not found in the argument list of pk::ImGuiUtilities::removeDuplicatesSorted(std::vector< std::string > &vec)
+D:/Programming/C++/ProtoKludge/include/utilities/ImGuiUtilities.hpp:20: warning: The following parameters of pk::ImGuiUtilities::removeDuplicatesSorted(std::vector< std::string > &vec) are not documented:
+  parameter 'vec'

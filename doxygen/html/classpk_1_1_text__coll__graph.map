@@ -1,0 +1,8 @@
+<map id="pk::Text" name="pk::Text">
+<area shape="rect" id="node2" href="$classpk_1_1_drawable.html" title="Interface for creating drawable entities. Part of the Decorator pattern for drawable objects used in ..." alt="" coords="575,660,678,767"/>
+<area shape="rect" id="node4" href="$structpk_1_1text_data.html" title="Data necessary for representing the Text. " alt="" coords="703,675,796,752"/>
+<area shape="rect" id="node11" href="$classpk_1_1_font.html" title="A class implemented using the Facade pattern used for loading SDL TTF_Font data. " alt="" coords="687,329,803,583"/>
+<area shape="rect" id="node6" href="$classpk_1_1_texture.html" title="A class implemented using the Facade pattern used for loading SDL_Texture data. " alt="" coords="80,373,189,539"/>
+<area shape="rect" id="node15" href="$classpk_1_1_transform.html" title="Transform used to manipulate the position, scale, center, and rotation of objects. " alt="" coords="1261,351,1405,561"/>
+<area shape="rect" id="node16" href="$structpk_1_1transform_data.html" title="Data used for transformations. " alt="" coords="1271,160,1396,237"/>
+</map>

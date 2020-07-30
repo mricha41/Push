@@ -1,0 +1,8 @@
+<map id="pk::GLSprite" name="pk::GLSprite">
+<area shape="rect" id="node2" href="$classpk_1_1_g_l_drawable.html" title="{pk::GLDrawable\n||+ GLDrawable()\l+ ~GLDrawable()\l+ draw()\l}" alt="" coords="5,961,125,1067"/>
+<area shape="rect" id="node3" href="$classpk_1_1_g_l_transformable.html" title="Decorator class for creating easing OpenGL transformations for game objects. " alt="" coords="350,836,498,1192"/>
+<area shape="rect" id="node4" href="$structpk_1_1_g_l_transform_data.html" title="Transform data for GLTransformable objects. Used by the GLTransformable class internally, but usable in isolation as well. " alt="" coords="407,608,553,685"/>
+<area shape="rect" id="node10" href="$structpk_1_1_g_l_rect.html" title="Useful for defining size and origin of an OpenGL object. " alt="" coords="272,292,360,369"/>
+<area shape="rect" id="node6" href="$structpk_1_1_g_l_states.html" title="Stores the states used to draw OpenGL objects. " alt="" coords="489,292,588,369"/>
+<area shape="rect" id="node13" href="$classpk_1_1_g_l_texture.html" title="Class for creating textures usable with OpenGL from SDL. " alt="" coords="945,520,1143,773"/>
+</map>

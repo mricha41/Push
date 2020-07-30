@@ -1,0 +1,3 @@
+<map id="MenuScreen" name="MenuScreen">
+<area shape="rect" id="node2" href="$classpk_1_1_screen_state.html" title="Abstract class for screen states, necessary for implementing the State pattern along with the Game cl..." alt="" coords="21,5,144,156"/>
+</map>

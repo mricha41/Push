@@ -1,0 +1,7 @@
+<map id="pk::Sprite" name="pk::Sprite">
+<area shape="rect" id="node2" href="$classpk_1_1_drawable.html" title="Interface for creating drawable entities. Part of the Decorator pattern for drawable objects used in ..." alt="" coords="260,587,363,693"/>
+<area shape="rect" id="node3" href="$structpk_1_1sprite_data.html" title="Data necessary for representing the Sprite. " alt="" coords="387,601,489,679"/>
+<area shape="rect" id="node5" href="$classpk_1_1_texture.html" title="A class implemented using the Facade pattern used for loading SDL_Texture data. " alt="" coords="131,337,241,502"/>
+<area shape="rect" id="node11" href="$classpk_1_1_transform.html" title="Transform used to manipulate the position, scale, center, and rotation of objects. " alt="" coords="739,315,883,524"/>
+<area shape="rect" id="node12" href="$structpk_1_1transform_data.html" title="Data used for transformations. " alt="" coords="749,160,874,237"/>
+</map>

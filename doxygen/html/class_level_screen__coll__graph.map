@@ -1,0 +1,18 @@
+<map id="LevelScreen" name="LevelScreen">
+<area shape="rect" id="node2" href="$classpk_1_1_screen_state.html" title="Abstract class for screen states, necessary for implementing the State pattern along with the Game cl..." alt="" coords="5,2244,128,2395"/>
+<area shape="rect" id="node34" href="$classpk_1_1_window.html" title="Class for SDL window creation and management, implemented using the Facade pattern to provide a more ..." alt="" coords="670,1820,815,2220"/>
+<area shape="rect" id="node42" href="$classpk_1_1_character_controller.html" title="{pk::CharacterController\n|&#45; m_pressedJump\l&#45; m_pressedRightShoulder\l|+ CharacterController()\l+ CharacterController()\l+ ~CharacterController()\l+ getBullets()\l+ requestPause()\l+ handleInput()\l+ update()\l+ getSprite()\l+ getPlayerID()\l+ BeginContact()\l+ EndContact()\l}" alt="" coords="1718,1901,1893,2139"/>
+<area shape="rect" id="node6" href="$classpk_1_1_h_u_d.html" title="{pk::HUD\n||+ HUD()\l+ ~HUD()\l+ setSize()\l+ getSize()\l+ setPosition()\l+ getPosition()\l+ increaseScore()\l+ setScore()\l+ update()\l&#45; HUD()\l}" alt="" coords="931,763,1056,972"/>
+<area shape="rect" id="node31" href="$classpk_1_1_g_l_texture.html" title="Class for creating textures usable with OpenGL from SDL. " alt="" coords="2662,741,2861,994"/>
+<area shape="rect" id="node44" href="$classpk_1_1_character_body.html" title="A class representing a Box2D dynamic body with special fixtures and data used to track collisions and..." alt="" coords="2275,1152,2434,1611"/>
+<area shape="rect" id="node45" href="$classpk_1_1_sensor_data.html" title="A class wrapping some user data for Box2D fixtures. Includes data for number of contacts being made t..." alt="" coords="1848,785,1971,950"/>
+<area shape="rect" id="node51" href="$classpk_1_1_game_controller.html" title="Convenience class for abstracting functionality that already exists in SDL. " alt="" coords="1308,1269,1457,1493"/>
+<area shape="rect" id="node23" href="$structpk_1_1_g_l_transform_data.html" title="Transform data for GLTransformable objects. Used by the GLTransformable class internally, but usable in isolation as well. " alt="" coords="3178,461,3323,539"/>
+<area shape="rect" id="node11" href="$classpk_1_1_arena.html" title="{pk::Arena\n|&#45; m_mediumPlatformTexture\l&#45; m_playerTwoTexture\l|+ Arena()\l+ ~Arena()\l+ handleInput()\l+ update()\l+ render()\l+ requestPause()\l}" alt="" coords="1487,2419,1673,2584"/>
+<area shape="rect" id="node20" href="$classpk_1_1_g_l_sprite.html" title="{pk::GLSprite\n||+ GLSprite()\l+ GLSprite()\l+ ~GLSprite()\l+ setTextureRect()\l+ getTextureRect()\l+ getTexture()\l+ setFillColor()\l+ getFillColor()\l+ setVertexColors()\l+ getVertexColors()\l+ draw()\l&#45; updateNormals()\l&#45; updateGeometry()\l}" alt="" coords="2787,1255,2922,1508"/>
+<area shape="rect" id="node21" href="$classpk_1_1_g_l_drawable.html" title="{pk::GLDrawable\n||+ GLDrawable()\l+ ~GLDrawable()\l+ draw()\l}" alt="" coords="2517,814,2637,921"/>
+<area shape="rect" id="node22" href="$classpk_1_1_g_l_transformable.html" title="Decorator class for creating easing OpenGL transformations for game objects. " alt="" coords="3109,689,3257,1045"/>
+<area shape="rect" id="node29" href="$structpk_1_1_g_l_rect.html" title="Useful for defining size and origin of an OpenGL object. " alt="" coords="2829,292,2917,369"/>
+<area shape="rect" id="node25" href="$structpk_1_1_g_l_states.html" title="Stores the states used to draw OpenGL objects. " alt="" coords="3513,292,3612,369"/>
+<area shape="rect" id="node43" href="$classb2_contact_listener.html" title="{b2ContactListener\n||}" alt="" coords="1638,1343,1765,1420"/>
+</map>

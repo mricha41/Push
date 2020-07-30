@@ -1,0 +1,4 @@
+<map id="pk::OptionsScreen" name="pk::OptionsScreen">
+<area shape="rect" id="node2" href="$classpk_1_1_screen_state.html" title="Abstract class for screen states, necessary for implementing the State pattern along with the Game cl..." alt="" coords="5,189,128,340"/>
+<area shape="rect" id="node4" href="$structpk_1_1options_1_1options_cereal.html" title="The data structure holding all of the options settings. " alt="" coords="164,226,337,303"/>
+</map>

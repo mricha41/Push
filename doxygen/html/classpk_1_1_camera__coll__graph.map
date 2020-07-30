@@ -1,0 +1,6 @@
+<map id="pk::Camera" name="pk::Camera">
+<area shape="rect" id="node2" href="$classpk_1_1_g_l_transformable.html" title="Decorator class for creating easing OpenGL transformations for game objects. " alt="" coords="94,601,242,957"/>
+<area shape="rect" id="node3" href="$structpk_1_1_g_l_transform_data.html" title="Transform data for GLTransformable objects. Used by the GLTransformable class internally, but usable in isolation as well. " alt="" coords="250,461,395,539"/>
+<area shape="rect" id="node9" href="$structpk_1_1_g_l_rect.html" title="Useful for defining size and origin of an OpenGL object. " alt="" coords="148,292,236,369"/>
+<area shape="rect" id="node5" href="$structpk_1_1_g_l_states.html" title="Stores the states used to draw OpenGL objects. " alt="" coords="363,292,461,369"/>
+</map>

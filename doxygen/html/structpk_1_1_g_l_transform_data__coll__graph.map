@@ -1,0 +1,4 @@
+<map id="pk::GLTransformData" name="pk::GLTransformData">
+<area shape="rect" id="node7" href="$structpk_1_1_g_l_rect.html" title="Useful for defining size and origin of an OpenGL object. " alt="" coords="100,292,188,369"/>
+<area shape="rect" id="node3" href="$structpk_1_1_g_l_states.html" title="Stores the states used to draw OpenGL objects. " alt="" coords="315,292,413,369"/>
+</map>

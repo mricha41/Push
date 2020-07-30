@@ -1,0 +1,507 @@
+#include "states/MenuScreen.hpp"
+
+#include <stdio.h>
+#include <vector>
+
+#include <glm\gtc\type_ptr.hpp>
+
+#include <SDL2/SDL_opengl.h>
+
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_opengl3.h"
+#include "imgui/imgui_impl_sdl.h"
+
+#include "core/Game.hpp"
+#include "graphics/Text.hpp"
+#include "graphics/TriangleShape.hpp"
+#include "graphics/RectangleShape.hpp"
+#include "graphics/Mesh.hpp"
+#include "graphics/Shader.hpp"
+#include "steeriously/libinc.hpp"
+
+const Uint32 MAXIMUM_FRAME_RATE = 60;
+const Uint32 MINIMUM_FRAME_RATE = 30;
+const double UPDATE_INTERVAL = (1.0 / MAXIMUM_FRAME_RATE);
+const double MAX_CYCLES_PER_FRAME = (MAXIMUM_FRAME_RATE / MINIMUM_FRAME_RATE);
+
+const int WINDOWX = 800;
+const int WINDOWY = 600;
+const double WALLPADDING = 20.0;
+const int OBSTACLES = 50;
+const int MINRADIUS = 10.f;
+const int MAXRADIUS = 15.f;
+const int MAXITERS = 2000;
+const int MINGAP = 4.f;
+const int MINBORDER = 50.f;
+
+std::vector<steer::Wall> m_walls;
+std::vector<steer::SphereObstacle> m_obstacles;
+
+namespace
+{
+    void createWalls()
+    {
+        //create the walls
+        const int NumWallVerts = 4;
+
+        steer::Vector2 walls[NumWallVerts] = {
+            steer::Vector2(WALLPADDING, WALLPADDING),
+            steer::Vector2(WINDOWX - WALLPADDING, WALLPADDING),
+            steer::Vector2(WINDOWX - WALLPADDING, WINDOWY - (WALLPADDING*3)),
+            steer::Vector2(WALLPADDING, WINDOWY - (WALLPADDING*3))
+        };
+
+        for (int w=0; w<NumWallVerts-1; ++w)
+        {
+            m_walls.push_back(steer::Wall(true, walls[w], walls[w+1]));
+        }
+
+        m_walls.push_back(steer::Wall(true, walls[NumWallVerts-1], walls[0]));
+    }
+
+    void createObstacles()
+    {
+        for (int o=0; o<OBSTACLES; ++o)
+        {
+            bool bOverlapped = true;
+
+            int NumTrys = 0;
+            int NumAllowableTrys = MAXITERS;
+
+            while (bOverlapped)
+            {
+                NumTrys++;
+
+                if (NumTrys > NumAllowableTrys) return;
+
+                int radius = steer::RandInt(MINRADIUS, MAXRADIUS);
+
+                const int border                 = MINBORDER;
+                const int MinGapBetweenObstacles = MINGAP;
+
+                steer::SphereObstacle ob = steer::SphereObstacle(steer::Vector2(steer::RandInt(radius+border, WINDOWX-radius-border),steer::RandInt(radius+border, WINDOWY-radius-30-border)), radius);
+
+                if (!steer::Overlapped(&ob, m_obstacles, MinGapBetweenObstacles))
+                {
+                    m_obstacles.push_back(ob);
+                    bOverlapped = false;
+                }
+            }
+        }
+    }
+}
+
+MenuScreen::MenuScreen()
+:
+    ScreenState(),
+    m_texture(),
+    m_sprite(),
+    m_running(false)
+{
+    setState(menuState::s_uninitialized);
+
+    if(!m_texture.loadTexture("images/menu.png", pk::Game::getWindow()->getRenderer()))
+        printf("Could not load texture!");
+
+    SDL_Rect sprRect;
+    sprRect.x = 0;
+    sprRect.y = 0;
+    sprRect.w = m_texture.getWidth();
+    sprRect.h = m_texture.getHeight();
+    m_sprite = pk::Sprite(&m_texture, sprRect);
+
+    m_font = new pk::Font();
+
+    if(m_font->loadFont("fonts/Sansation_Regular.ttf", 32))
+    {
+        m_text = new pk::Text(m_font, &m_textTexture, {0,0,0,0}, "Hello, World!");
+    }
+    else
+    {
+        printf("Could not load the font! Error:%s\n", SDL_GetError());
+    }
+
+    m_text->setRenderMode(pk::Text::renderMode::blendedWrapped, pk::Game::getInstance().getWindow()->getWindowRect().w/2);
+
+    m_music=Mix_LoadMUS("sound/title.ogg");
+    if(!m_music)
+    {
+        printf("Mix_LoadMUS(\"title.ogg\"): %s\n", Mix_GetError());
+    }
+
+    Mix_VolumeMusic(20);
+
+    Mix_PlayMusic(m_music, -1);
+}
+
+MenuScreen::~MenuScreen()
+{
+    // Cleanup
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplSDL2_Shutdown();
+    ImGui::DestroyContext();
+
+    TTF_CloseFont(m_font->getFont());
+    delete m_text;
+    delete m_font;
+
+    Mix_HaltMusic();
+    Mix_FreeMusic(m_music);
+}
+
+void MenuScreen::display()
+{
+    setState(menuState::s_running);
+    m_running = true;
+
+    SDL_Event e;
+
+    pk::Window* pkWin = pk::Game::getWindow();
+    SDL_Window* win = pk::Game::getWindow()->getWindow();
+    SDL_GLContext* context = &pk::Game::getWindow()->getContext();//SDL_GL_CreateContext(win);
+
+    IMGUI_CHECKVERSION();
+    ImGuiContext* imcon = ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
+    //ImGui::StyleColorsClassic();
+
+    // Setup Platform/Renderer bindings
+    ImGui_ImplSDL2_InitForOpenGL(win, *context);
+    const char* glsl_version = "#version 130";
+    ImGui_ImplOpenGL3_Init(glsl_version);
+
+    ImGui::SetCurrentContext(imcon);
+
+    int show = 0;
+    bool show_demo_window = true;
+    bool show_another_window = true;
+    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
+    unsigned int indices[] = {
+		0, 1, 2,
+		2, 3, 0
+	};
+
+	GLfloat vertices[] = {
+	    // position     texture             normals
+	    //	x      y      z		u	  v		nx	  ny    nz
+		0.0f,   0.0f,   0.0f,   0.0f, 0.0f, 0.0f, 0.0f, 0.0f, //bottom left
+		100.0f, 0.0f,   0.0f,	0.5f, 0.0f, 0.0f, 0.0f, 0.0f, //into background for depth...
+		200.0f, 0.0f,   0.0f,	1.0f, 0.0f, 0.0f, 0.0f, 0.0f, //bottom right
+		100.0f, 200.0f, 0.0f,	0.5f, 1.0f, 0.0f, 0.0f, 0.0f  //top
+	};
+
+	printf("vertices: %d\n", sizeof(vertices)/sizeof(vertices[0]));
+	printf("indices: %d\n", sizeof(indices)/sizeof(indices[0]));
+
+    pk::Mesh* triangle = new pk::Mesh(vertices, indices, sizeof(vertices)/sizeof(vertices[0]), sizeof(indices));
+
+	pk::TriangleShape* tri = new pk::TriangleShape(100.f, 100.f);
+	//tri->setPosition({300.f, 100.f});
+    tri->setScale({0.5f, 0.5f});
+
+    //seed random...
+    srand(NULL);
+
+    //set up steering entities...
+    //set up walls
+    createWalls();
+
+    //set up obstacles
+    createObstacles();
+
+    steer::BehaviorParameters p;
+    p.radius = 50.f;
+    p.PursuitWeight = 2.f;
+    p.MaxSpeed = 500.f;
+    steer::PursuitComponent w(&p);
+    //w.setScale(0.5f);
+    //w.setPosition(steer::Vector2(300.0, 100.0));
+
+    pk::RectangleShape* rect = new pk::RectangleShape(100.f, 100.f);
+    rect->setPosition({400.f, 300.f});
+    rect->setScale({0.5f, 0.5f});
+
+    p.EvadeWeight = 2.f;
+    p.MaxSpeed = 400.f;
+    steer::EvadeComponent f(&p);
+    f.setPosition({400.f, 300.f});
+    f.setTargetAgent(&w);
+    f.setThreatRange(300.f);
+
+    p.NumAgents = 500;
+    p.MaxSpeed = 600.f;
+    p.SeparationWeight = 10.f;
+    p.AlignmentWeight = 10.f;
+    p.CohesionWeight = 10.f;
+
+    std::vector<steer::SuperComponent> triangles;
+    std::vector<steer::SuperComponent*> tripointers;
+    for(int i=0; i<p.NumAgents; ++i)
+    {
+        int tx = rand() % 700;
+        int ty = rand() % 500;
+        steer::SuperComponent tf(&p);
+        tf.flockingOn();
+        tf.wallAvoidanceOff();
+        tf.obstacleAvoidanceOff();
+        tf.setTarget({400.0, 300.0});
+        tf.setPosition({tx, ty});
+        triangles.push_back(tf);
+        tripointers.push_back(&tf);
+    }
+
+    std::vector<steer::Wall*> pw;
+    for(auto& i : m_walls)
+        pw.push_back(&i);
+
+    std::vector<steer::SphereObstacle*> po;
+    for(auto& i : m_obstacles)
+        po.push_back(&i);
+
+    //flock needs pointer to
+    //container of pointers :D
+    //COPIES ARE THE DEVIL!!! \m/
+    for(int i=0; i<p.NumAgents; ++i)
+    {
+        triangles[i].setNeighbors(&tripointers);
+        triangles[i].setWalls(&pw);
+        triangles[i].setObstacles(&po);
+    }
+
+    //set target for pursuer as well...
+    w.setTargetAgent(&f);
+
+    const char* vShader = "shaders/shader.vert";
+    const char* fShader = "shaders/shader.frag";
+	pk::Shader *shader = new pk::Shader();
+	shader->load(vShader, fShader);
+
+    m_glStates.modelLocation = &shader->getModelLocation();
+    m_glStates.projectionLocation = &shader->getProjectionLocation();
+    m_glStates.viewLocation = &shader->getViewLocation();
+
+    //glm::mat4 projection = glm::perspective(45.0f, 800.f / 600.f, 0.1f, 100.0f);
+    glm::mat4 projection = glm::ortho(0.0f, 800.0f, 600.0f, 0.0f, 0.1f, 100.0f);
+
+    SDL_GL_MakeCurrent(win, pk::Game::getWindow()->getContext());
+    glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
+
+    bool direction = true;
+    float triOffset = 0.0f;
+    float triMaxOffset = 400.0f;
+    float triIncrement = 5.0f;
+
+    static double lastFrameTime = 0.0;
+    static double cyclesLeftOver = 0.0;
+    double currentTime;
+    double updateIterations;
+
+    while(isRunning())
+    {
+        int x,y;
+        SDL_GetMouseState(&x, &y);
+        //printf("mouse: %d, %d\n", x, y);
+
+        while(SDL_PollEvent(&e))
+        {
+            ImGui_ImplSDL2_ProcessEvent(&e);
+            if(e.type == SDL_QUIT)
+            {
+                setState(menuState::s_exit);
+                return;
+            }
+
+            if(e.type == SDL_KEYUP)
+            {
+                switch(e.key.keysym.scancode)
+                {
+                case SDL_SCANCODE_I:
+                {
+                    show_demo_window = !show_demo_window;
+                }
+                break;
+                case SDL_SCANCODE_LEFT:
+                {
+                    if(show > 0)
+                        show -= 1;
+                }
+                break;
+                case SDL_SCANCODE_RIGHT:
+                {
+                    if(show < 2)
+                        show += 1;
+                }
+                break;
+                case SDL_SCANCODE_ESCAPE:
+                {
+                    setState(menuState::s_exit);
+                    return;
+                }
+                break;
+                case SDL_SCANCODE_RETURN:
+                {
+                    setState(menuState::s_play);
+                    return;
+                }
+                break;
+                default:
+                    break;
+                }
+            }
+        }
+
+        if(show == 0)
+        {
+            pk::Game::getWindow()->clear();
+
+            pk::Game::getWindow()->draw(m_sprite);
+
+            pk::Game::getWindow()->render();
+        }
+        else if(show == 1)
+        {
+            // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
+            // Start the Dear ImGui frame
+            ImGui_ImplOpenGL3_NewFrame();
+            ImGui_ImplSDL2_NewFrame(win);
+            ImGui::NewFrame();
+
+            if(show_demo_window)
+            {
+                //ImGui::ShowDemoWindow(&show_demo_window);
+                static float f = 0.0f;
+                static int counter = 0;
+
+                ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+
+                ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+                ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
+                ImGui::Checkbox("Another Window", &show_another_window);
+
+                ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+                ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+
+                if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+                    counter++;
+                ImGui::SameLine();
+                ImGui::Text("counter = %d", counter);
+
+                ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
+                if (ImGui::Button("Close"))
+                    show_demo_window = false;
+
+                ImGui::End();
+            }
+
+            // 3. Show another simple window.
+            if (show_another_window)
+            {
+                ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+                ImGui::Text("Hello from another window!");
+                if (ImGui::Button("Close"))
+                    show_another_window = false;
+                ImGui::End();
+            }
+
+            // Rendering
+            //glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
+            glClear(GL_COLOR_BUFFER_BIT);
+
+            ImGui::Render();
+
+            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+            SDL_GL_SwapWindow(win);
+        }
+        else if(show == 2)
+        {
+            currentTime = SDL_GetTicks();
+            updateIterations = ((currentTime - lastFrameTime) + cyclesLeftOver);
+
+            if (updateIterations > (MAX_CYCLES_PER_FRAME * UPDATE_INTERVAL)) {
+                updateIterations = (MAX_CYCLES_PER_FRAME * UPDATE_INTERVAL);
+            }
+
+            while (updateIterations > UPDATE_INTERVAL) {
+                updateIterations -= UPDATE_INTERVAL;
+
+                w.Update(UPDATE_INTERVAL);
+                //w.setTarget(f.getPosition());
+                WrapAround(w.m_agentPosition, 800, 600);
+
+                f.Update(UPDATE_INTERVAL);
+                //f.setTarget(w.getPosition());
+                WrapAround(f.m_agentPosition, 800, 600);
+
+                for(int i=0; i<p.NumAgents; ++i)
+                {
+                    triangles[i].Update(UPDATE_INTERVAL);
+
+                    triangles[i].setTarget({x,y});
+
+                    WrapAround(triangles[i].m_agentPosition, 800, 600);
+                }
+
+            }
+
+            cyclesLeftOver = updateIterations;
+            lastFrameTime = currentTime;
+
+            if (direction)
+            {
+                triOffset += triIncrement;
+            }
+            else {
+                triOffset -= triIncrement;
+            }
+
+            if (abs(triOffset) >= triMaxOffset)
+            {
+                direction = !direction;
+            }
+
+            glClear(GL_COLOR_BUFFER_BIT);
+
+            shader->use();
+
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::translate(model, glm::vec3(100.0f, triOffset, 0.0f));
+            glUniformMatrix4fv(*m_glStates.modelLocation, 1, GL_FALSE, glm::value_ptr(model));
+            //glm::translate(model, glm::vec3(0.f, 0.f, 0.f));
+
+            glm::mat4 view = glm::mat4(1.0f);
+            view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+
+            glUniformMatrix4fv(*m_glStates.projectionLocation, 1, GL_FALSE, glm::value_ptr(projection));
+            glUniformMatrix4fv(*m_glStates.viewLocation, 1, GL_FALSE, glm::value_ptr(view));
+
+            triangle->draw();
+
+            tri->setPosition({w.getPosition().x, w.getPosition().y});
+            tri->setAngle(w.getRotation() + 180.f);
+            pkWin->draw(*tri, m_glStates);
+
+            rect->rotate(5.f);
+            rect->setPosition({f.getPosition().x, f.getPosition().y});
+            pkWin->draw(*rect, m_glStates);
+
+            for(auto i : triangles)
+            {
+                tri->setScale({0.1f, 0.1f});
+                tri->setPosition({i.getPosition().x, i.getPosition().y});
+                tri->setAngle(i.getRotation() + 180.f);
+                pkWin->draw(*tri, m_glStates);
+            }
+
+            glUseProgram(0);
+
+            SDL_GL_SwapWindow(win);
+        }
+    }
+}

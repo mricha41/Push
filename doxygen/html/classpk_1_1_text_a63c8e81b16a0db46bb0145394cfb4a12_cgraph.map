@@ -1,0 +1,4 @@
+<map id="pk::Text::setBoundsRect" name="pk::Text::setBoundsRect">
+<area shape="rect" id="node2" href="$classpk_1_1_transform.html#a4333b1a8ea64060f5f1f9102483e9405" title="Set the position of the transformable in the Window. " alt="" coords="220,5,395,32"/>
+<area shape="rect" id="node3" href="$classpk_1_1_text.html#a7c346e2af3fc0ab402f77dde98f4606d" title="Used internally when the render mode is initialized or changed. Never call this in a loop unless you ..." alt="" coords="228,56,387,83"/>
+</map>

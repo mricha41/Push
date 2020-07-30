@@ -1,0 +1,707 @@
+#include "states/LevelScreen.hpp"
+
+#include <stdio.h>
+#include <vector>
+
+#include <glm\gtc\type_ptr.hpp>
+
+#include <Box2D/Box2D.h>
+
+#include <SDL2/SDL_opengl.h>
+
+#include "graphics/Camera.hpp"
+#include "graphics/Text.hpp"
+#include "graphics/TriangleShape.hpp"
+#include "graphics/RectangleShape.hpp"
+#include "graphics/GLSprite.hpp"
+#include "graphics/GLTexture.hpp"
+#include "graphics/Shader.hpp"
+#include "lighting/AmbientLight.hpp"
+#include "lighting/DiffuseLight.hpp"
+#include "lighting/Material.hpp"
+#include "steeriously/libinc.hpp"
+#include "core/GameController.hpp"
+
+const int WINDOWX = 800;
+const int WINDOWY = 600;
+const double WALLPADDING = 20.0;
+const int OBSTACLES = 50;
+const int MINRADIUS = 10.f;
+const int MAXRADIUS = 15.f;
+const int MAXITERS = 2000;
+const int MINGAP = 4.f;
+const int MINBORDER = 50.f;
+
+std::vector<steer::Wall> m_walls;
+std::vector<steer::SphereObstacle> m_obstacles;
+
+namespace
+{
+    void createWalls()
+    {
+        //create the walls
+        const int NumWallVerts = 4;
+
+        steer::Vector2 walls[NumWallVerts] = {
+            steer::Vector2(WALLPADDING, WALLPADDING),
+            steer::Vector2(WINDOWX - WALLPADDING, WALLPADDING),
+            steer::Vector2(WINDOWX - WALLPADDING, WINDOWY - (WALLPADDING*3)),
+            steer::Vector2(WALLPADDING, WINDOWY - (WALLPADDING*3))
+        };
+
+        for (int w=0; w<NumWallVerts-1; ++w)
+        {
+            m_walls.push_back(steer::Wall(true, walls[w], walls[w+1]));
+        }
+
+        m_walls.push_back(steer::Wall(true, walls[NumWallVerts-1], walls[0]));
+    }
+
+    void createObstacles()
+    {
+        for (int o=0; o<OBSTACLES; ++o)
+        {
+            bool bOverlapped = true;
+
+            int NumTrys = 0;
+            int NumAllowableTrys = MAXITERS;
+
+            while (bOverlapped)
+            {
+                NumTrys++;
+
+                if (NumTrys > NumAllowableTrys) return;
+
+                int radius = steer::RandInt(MINRADIUS, MAXRADIUS);
+
+                const int border                 = MINBORDER;
+                const int MinGapBetweenObstacles = MINGAP;
+
+                steer::SphereObstacle ob = steer::SphereObstacle(steer::Vector2(steer::RandInt(radius+border, WINDOWX-radius-border),steer::RandInt(radius+border, WINDOWY-radius-30-border)), radius);
+
+                if (!steer::Overlapped(&ob, m_obstacles, MinGapBetweenObstacles))
+                {
+                    m_obstacles.push_back(ob);
+                    bOverlapped = false;
+                }
+            }
+        }
+    }
+}
+
+LevelScreen::LevelScreen()
+:
+    ScreenState(),
+    m_font(),
+    m_textTexture(),
+    m_screenTitle(nullptr, nullptr, {0,0,0,0}, "PUSH!!!"),
+    m_music(nullptr)
+{
+    m_running = false;
+
+    setState(levelState::s_uninitialized);
+}
+
+LevelScreen::~LevelScreen()
+{
+    if(m_font.getFont() != nullptr)
+        TTF_CloseFont(m_font.getFont());
+
+    Mix_HaltMusic();
+    Mix_FreeMusic(m_music);
+
+    m_music = nullptr;
+}
+
+void LevelScreen::display()
+{
+    setState(levelState::s_running);
+    m_running = true;
+
+    SDL_Event e;
+
+    pk::Window* pkWin = pk::Game::getWindow();
+    SDL_Window* win = pk::Game::getWindow()->getWindow();
+    SDL_GLContext* context = &pk::Game::getWindow()->getContext();
+
+    m_font = pk::Font();
+
+    if(!m_font.loadFont("fonts/Sansation_Regular.ttf", 116))
+    {
+        printf("Could not load the font! Error:%s\n", SDL_GetError());
+    }
+
+    m_music=Mix_LoadMUS("sound/title.ogg");
+    if(!m_music)
+    {
+        printf("Mix_LoadMUS(\"title.ogg\"): %s\n", Mix_GetError());
+    }
+
+    Mix_VolumeMusic(20);
+
+    Mix_PlayMusic(m_music, -1);
+
+    m_screenTitle = pk::Text(&m_font, &m_textTexture, {0,0,0,0}, "PUSH!!!");
+
+    m_screenTitle.setRenderMode(pk::Text::renderMode::blendedWrapped, pk::Game::getInstance().getWindow()->getWindowRect().w/2);
+    m_screenTitle.getTextData().d_transform.setPosition(glm::vec2(pk::Game::getInstance().getWindow()->getWindowRect().w/2 - m_screenTitle.getBoundsRect().w/2,20.f));
+
+
+    const char* tgvShader = "shaders/textured geometry/specular lighting/shader.vert";
+    const char* tgfShader = "shaders/textured geometry/specular lighting/shader.frag";
+	pk::Shader *tgShader = new pk::Shader();
+	tgShader->load(tgvShader, tgfShader);
+
+    pk::GLStates textured_glStates;
+	textured_glStates.modelLocation = &tgShader->getModelLocation();
+    textured_glStates.projectionLocation = &tgShader->getProjectionLocation();
+    textured_glStates.viewLocation = &tgShader->getViewLocation();
+    textured_glStates.ambientIntensityLocation = &tgShader->getAmbientIntensityLocation();
+    textured_glStates.ambientColorLocation = &tgShader->getAmbientColorLocation();
+    textured_glStates.diffuseIntensityLocation = &tgShader->getDiffuseIntensityLocation();
+    textured_glStates.directionLocation = &tgShader->getDirectionLocation();
+    textured_glStates.specularIntensityLocation = &tgShader->getSpecularIntensityLocation();
+    textured_glStates.shininessLocation = &tgShader->getShininessLocation();
+    textured_glStates.eyePositionLocation = &tgShader->getEyePositionLocation();
+
+	const char* fvShader = "shaders/untextured geometry/specular lighting/shader.vert";
+    const char* ffShader = "shaders/untextured geometry/specular lighting/shader.frag";
+	pk::Shader *fShader = new pk::Shader();
+	fShader->load(fvShader, ffShader);
+
+    pk::GLStates flat_glStates;
+    flat_glStates.modelLocation = &fShader->getModelLocation();
+    flat_glStates.projectionLocation = &fShader->getProjectionLocation();
+    flat_glStates.viewLocation = &fShader->getViewLocation();
+    flat_glStates.ambientIntensityLocation = &fShader->getAmbientIntensityLocation();
+    flat_glStates.ambientColorLocation = &fShader->getAmbientColorLocation();
+    flat_glStates.diffuseIntensityLocation = &fShader->getDiffuseIntensityLocation();
+    flat_glStates.directionLocation = &fShader->getDirectionLocation();
+    flat_glStates.shininessLocation = &fShader->getShininessLocation();
+    flat_glStates.specularIntensityLocation = &fShader->getSpecularIntensityLocation();
+    flat_glStates.eyePositionLocation = &fShader->getEyePositionLocation();
+
+    //glm::mat4 projection = glm::perspective(45.0f, (float)pkWin->getSize().x / (float)pkWin->getSize().y, 0.1f, 100.0f);
+    glm::mat4 projection = glm::ortho(0.0f, (float)pkWin->getSize().x, (float)pkWin->getSize().y, 0.0f, 0.1f, 100.0f);
+
+    SDL_GL_MakeCurrent(win, *context);
+    glViewport(0.f, 0.f, pkWin->getSize().x, pkWin->getSize().y);
+    glEnable(GL_BLEND);
+    //glEnable(GL_DEPTH_TEST);
+
+    pk::GLTexture fishTex = pk::GLTexture("images/fish.png");
+    pk::GLTexture faceTex = pk::GLTexture("images/chomp.png");
+    pk::GLTexture groundTex = pk::GLTexture("images/dirt.png");
+
+    pk::GLSprite ground = pk::GLSprite(groundTex, {0.f, 0.f, 800.f, 200.f});
+    ground.setPosition({400.f, 580.f});
+
+    pk::GLSprite platform = pk::GLSprite(groundTex, {0.f, 0.f, 100.f, 40.f});
+    platform.setPosition({400.f, 350.f});
+
+    pk::GLSprite platform2 = pk::GLSprite(groundTex, {0.f, 0.f, 100.f, 40.f});
+    platform2.setPosition({200.f, 270.f});
+
+    pk::GLSprite p1 = pk::GLSprite(fishTex, {0.f, 0.f, 24.f, 16.f});
+    p1.setScale({5.f, 5.f});
+    p1.setPosition({100.f, 200.f});
+    p1.getTexture()->setTextureFilterParameters(pk::GLTextureFilter::NEAREST, pk::GLTextureFilter::NEAREST);
+
+    pk::GLSprite p2 = pk::GLSprite(fishTex, {0.f, 0.f, 24.f, 16.f});
+    p2.setPosition({300.f, 200.f});
+    p2.setScale({5.f, 5.f});
+    p2.getTexture()->setTextureFilterParameters(pk::GLTextureFilter::NEAREST, pk::GLTextureFilter::NEAREST);
+
+    pk::GLSprite p3 = pk::GLSprite(faceTex, {0.f, 0.f, 48.f, 48.f});
+    p3.setPosition({300.f, 400.f});
+
+    pk::GLSprite p4 = pk::GLSprite(faceTex, {0.f, 0.f, 48.f, 48.f});
+    p4.setPosition({100.f, 400.f});
+
+    //////////////////////////////
+    //set up flock
+    //////////////////////////////
+    pk::TriangleShape* tri = new pk::TriangleShape(100.f, 100.f);
+	//tri->setPosition({300.f, 100.f});
+    tri->setScale({0.5f, 0.5f});
+
+    //seed random...
+    srand(NULL);
+
+    //set up steering entities...
+    //set up walls
+    createWalls();
+
+    //set up obstacles
+    createObstacles();
+
+    steer::BehaviorParameters p;
+    p.radius = 50.f;
+    p.PursuitWeight = 2.f;
+    p.MaxSpeed = 500.f;
+    steer::PursuitComponent w(&p);
+    //w.setScale(0.5f);
+    //w.setPosition(steer::Vector2(300.0, 100.0));
+
+    pk::RectangleShape rect = pk::RectangleShape(100.f, 100.f);
+    rect.setPosition({400.f, 300.f});
+    rect.setScale({0.5f, 0.5f});
+    rect.setFillColor({255, 0, 255, 255});
+
+    p.EvadeWeight = 2.f;
+    p.MaxSpeed = 400.f;
+    steer::EvadeComponent f(&p);
+    f.setPosition({400.f, 300.f});
+    f.setTargetAgent(&w);
+    f.setThreatRange(300.f);
+
+    p.NumAgents = 500;
+    p.MaxSpeed = 600.f;
+    p.SeparationWeight = 10.f;
+    p.AlignmentWeight = 10.f;
+    p.CohesionWeight = 10.f;
+
+    std::vector<steer::SuperComponent> triangles;
+    std::vector<steer::SuperComponent*> tripointers;
+    for(int i=0; i<p.NumAgents; ++i)
+    {
+        int tx = rand() % 700;
+        int ty = rand() % 500;
+        steer::SuperComponent tf(&p);
+        tf.flockingOn();
+        tf.wallAvoidanceOff();
+        tf.obstacleAvoidanceOff();
+        tf.setTarget({400.0, 300.0});
+        tf.setPosition({tx, ty});
+        triangles.push_back(tf);
+        tripointers.push_back(&tf);
+    }
+
+    std::vector<steer::Wall*> pw;
+    for(auto& i : m_walls)
+        pw.push_back(&i);
+
+    std::vector<steer::SphereObstacle*> po;
+    for(auto& i : m_obstacles)
+        po.push_back(&i);
+
+    //flock needs pointer to
+    //container of pointers :D
+    //COPIES ARE THE DEVIL!!! \m/
+    for(int i=0; i<p.NumAgents; ++i)
+    {
+        triangles[i].setNeighbors(&tripointers);
+        triangles[i].setWalls(&pw);
+        triangles[i].setObstacles(&po);
+    }
+
+    //set target for pursuer as well...
+    w.setTargetAgent(&f);
+
+    ////////////////////////////////
+    //end flock setup
+    ////////////////////////////////
+
+    pk::Material shinyMaterial = pk::Material(2.0f, 320);
+    pk::Material dullMaterial = pk::Material(0.3f, 4);
+
+    pk::Camera cam = pk::Camera({0.f, 0.f});
+    cam.setRect({0.f, 0.f, 800.f, 600.f});
+    cam.setOrigin({400.f, 300.f});
+    cam.setPosition({400.f, 300.f});
+    cam.setScale({1.f, 1.f});
+
+    pk::DiffuseLight mainLight = pk::DiffuseLight({0.0f, 1.0f, 0.0f, 1.0f}, 0.2f, cam.getOrigin().x/2.f, cam.getOrigin().y/2.f, -1.0f, 0.5f);
+    pk::DiffuseLight secondLight = pk::DiffuseLight({1.0f, 1.0f, 1.0f, 1.0f}, 0.2f, 100.0f, 100.0f, -1.0f, 1.0f);
+
+    printf("Controllers available: %d\n", SDL_NumJoysticks());
+
+    pk::GameController controller1 = pk::GameController(0);
+    printf("Controller name: %s\n", controller1.getControllerName());
+
+    pk::GameController controller2 = pk::GameController(1);
+    printf("Controller name: %s\n", controller2.getControllerName());
+
+    pk::GameController controller3 = pk::GameController(2);
+    printf("Controller name: %s\n", controller3.getControllerName());
+
+    pk::GameController controller4 = pk::GameController(3);
+    printf("Controller name: %s\n", controller4.getControllerName());
+
+    //////////////////////////////////////
+    //box2d setup
+    //////////////////////////////////////
+    b2World world({0.f, 100.f});
+
+    b2BodyDef groundBodyDef;
+    groundBodyDef.position.Set(0.0f, 17.0f);
+
+    b2Body* groundBody = world.CreateBody(&groundBodyDef);
+
+    b2PolygonShape groundBox;
+    groundBox.SetAsBox(40.0f, 1.0f);
+
+    groundBody->CreateFixture(&groundBox, 0.0f);
+
+    //p1 physics
+    b2BodyDef bodyDef;
+    bodyDef.type = b2_dynamicBody;
+    bodyDef.position.Set(10.0f, 0.0f);
+    bodyDef.fixedRotation = true;
+    b2Body* body = world.CreateBody(&bodyDef);
+
+    b2PolygonShape dynamicBox;
+    dynamicBox.SetAsBox(2.0f, 1.35f);
+
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape = &dynamicBox;
+    fixtureDef.density = 1.0f;
+    fixtureDef.friction = 0.3f;
+    fixtureDef.restitution = 0.5f;
+
+    body->CreateFixture(&fixtureDef);
+
+    //p2 physics
+    b2BodyDef bodyDef2;
+    bodyDef2.type = b2_dynamicBody;
+    bodyDef2.position.Set(10.0f, 0.0f);
+    bodyDef2.fixedRotation = true;
+    b2Body* body2 = world.CreateBody(&bodyDef2);
+
+    b2PolygonShape dynamicBox2;
+    dynamicBox2.SetAsBox(2.0f, 1.35f);
+
+    b2FixtureDef fixtureDef2;
+    fixtureDef2.shape = &dynamicBox2;
+    fixtureDef2.density = 1.0f;
+    fixtureDef2.friction = 0.3f;
+    fixtureDef2.restitution = 0.5f;
+
+    body2->CreateFixture(&fixtureDef2);
+
+    //p3 physics
+    b2BodyDef bodyDef3;
+    bodyDef3.type = b2_dynamicBody;
+    bodyDef3.position.Set(10.0f, 0.0f);
+    bodyDef3.fixedRotation = true;
+    b2Body* body3 = world.CreateBody(&bodyDef3);
+
+    b2PolygonShape dynamicBox3;
+    dynamicBox3.SetAsBox(0.6f, 0.7f);
+
+    b2FixtureDef fixtureDef3;
+    fixtureDef3.shape = &dynamicBox3;
+    fixtureDef3.density = 1.0f;
+    fixtureDef3.friction = 0.3f;
+    fixtureDef3.restitution = 0.5f;
+
+    body3->CreateFixture(&fixtureDef3);
+
+    //p4 physics
+    b2BodyDef bodyDef4;
+    bodyDef4.type = b2_dynamicBody;
+    bodyDef4.position.Set(10.0f, 0.0f);
+    bodyDef4.fixedRotation = true;
+    b2Body* body4 = world.CreateBody(&bodyDef4);
+
+    b2PolygonShape dynamicBox4;
+    dynamicBox4.SetAsBox(0.6f, 0.7f);
+
+    b2FixtureDef fixtureDef4;
+    fixtureDef4.shape = &dynamicBox4;
+    fixtureDef4.density = 1.0f;
+    fixtureDef4.friction = 0.3f;
+    fixtureDef4.restitution = 0.5f;
+
+    body4->CreateFixture(&fixtureDef4);
+
+    //static platforms
+    b2PolygonShape box;
+    box.SetAsBox(1.f, 0.5f);
+
+    b2FixtureDef platformFixtureDef;
+    platformFixtureDef.shape = &box;
+    platformFixtureDef.density = 1;
+
+    b2BodyDef plat1;
+    plat1.type = b2_staticBody;
+    plat1.position.Set(6.0f, 9.f);
+    b2Body* statBody = world.CreateBody(&plat1);
+    statBody->CreateFixture(&platformFixtureDef);
+
+    b2BodyDef plat2;
+    plat2.type = b2_staticBody;
+    plat2.position.Set(13.0f, 11.5f);
+    b2Body* statBody2 = world.CreateBody(&plat2);
+    statBody2->CreateFixture(&platformFixtureDef);
+
+    float32 timeStep = 1.0f / 60.0f;
+    int32 velocityIterations = 6;
+    int32 positionIterations = 2;
+    b2Vec2 p1position = {0.f, 0.f};
+    float32 p1angle = 0.f;
+    b2Vec2 p2position = {0.f, 0.f};
+    float32 p2angle = 0.f;
+    b2Vec2 p3position = {0.f, 0.f};
+    float32 p3angle = 0.f;
+    b2Vec2 p4position = {0.f, 0.f};
+    float32 p4angle = 0.f;
+
+    const Uint32 MAXIMUM_FRAME_RATE = 60;
+    const Uint32 MINIMUM_FRAME_RATE = 30;
+    const double UPDATE_INTERVAL = (1.0 / MAXIMUM_FRAME_RATE);
+    const double MAX_CYCLES_PER_FRAME = (MAXIMUM_FRAME_RATE / MINIMUM_FRAME_RATE);
+
+    static double lastFrameTime = 0.0;
+    static double cyclesLeftOver = 0.0;
+    double currentTime;
+    double updateIterations;
+
+    while(isRunning())
+    {
+        int x,y;
+        SDL_GetMouseState(&x, &y);
+
+        while(SDL_PollEvent(&e))
+        {
+            if(e.type == SDL_QUIT)
+            {
+                setState(levelState::s_exit);
+                return;
+            }
+
+            if(e.type == SDL_KEYDOWN)
+            {
+                switch(e.key.keysym.scancode)
+                {
+                case SDL_SCANCODE_A:
+                {
+                    cam.move({-10.f, 0.f});
+                }
+                break;
+                case SDL_SCANCODE_D:
+                {
+                    cam.move({10.f, 0.f});
+                }
+                break;
+                case SDL_SCANCODE_W:
+                {
+                    cam.move({0.f, -10.f});
+                }
+                break;
+                case SDL_SCANCODE_S:
+                {
+                    cam.move({0.f, 10.f});
+                }
+                break;
+                case SDL_SCANCODE_KP_4:
+                {
+                    cam.rotate(-5.f);
+                }
+                break;
+                case SDL_SCANCODE_KP_6:
+                {
+                    cam.rotate(5.f);
+                }
+                break;
+                case SDL_SCANCODE_KP_8:
+                {
+                    cam.scale({0.01f, 0.01f});
+                }
+                break;
+                case SDL_SCANCODE_KP_2:
+                {
+                    cam.scale({-0.01f, -0.01f});
+                }
+                break;
+                default:
+                break;
+                }
+            }
+
+            if(e.type == SDL_KEYUP)
+            {
+                switch(e.key.keysym.scancode)
+                {
+                case SDL_SCANCODE_ESCAPE:
+                {
+                    setState(levelState::s_menu);
+                    m_running = false;
+                    return;
+                }
+                break;
+                default:
+                    break;
+                }
+            }
+        }
+
+        currentTime = SDL_GetTicks();
+        updateIterations = ((currentTime - lastFrameTime) + cyclesLeftOver);
+
+        if (updateIterations > (MAX_CYCLES_PER_FRAME * UPDATE_INTERVAL)) {
+            updateIterations = (MAX_CYCLES_PER_FRAME * UPDATE_INTERVAL);
+        }
+
+        while (updateIterations > UPDATE_INTERVAL) {
+            updateIterations -= UPDATE_INTERVAL;
+            world.Step(UPDATE_INTERVAL, velocityIterations, positionIterations);
+            //printf("%4.2f %4.2f %4.2f\n", p1position.x, p1position.y, p1angle);
+
+            //flock stuff...
+            //w.setTarget(f.getPosition());
+            WrapAround(w.m_agentPosition, 800, 600);
+
+            f.Update(UPDATE_INTERVAL);
+            //f.setTarget(w.getPosition());
+            WrapAround(f.m_agentPosition, 800, 600);
+
+            for(int i=0; i<p.NumAgents; ++i)
+            {
+                triangles[i].Update(UPDATE_INTERVAL);
+
+                triangles[i].setTarget({p1.getPosition().x, p1.getPosition().y});
+
+                WrapAround(triangles[i].m_agentPosition, 800, 600);
+            }
+        }
+
+        p1position = body->GetPosition();
+        p1angle = body->GetAngle();
+
+        p2position = body2->GetPosition();
+        p2angle = body2->GetAngle();
+
+        p3position = body3->GetPosition();
+        p3angle = body3->GetAngle();
+
+        p4position = body4->GetPosition();
+        p4angle = body4->GetAngle();
+
+        p1.setPosition({30.f*p1position.x, 30.f*p1position.y});
+        p1.setAngle(30*glm::degrees(body->GetAngle()));
+        p2.setPosition({30.f*p2position.x, 30.f*p2position.y});
+        p2.setAngle(30*glm::degrees(body2->GetAngle()));
+        p3.setPosition({30.f*p3position.x, 30.f*p3position.y});
+        p3.setAngle(30*glm::degrees(body3->GetAngle()));
+        p4.setPosition({30.f*p4position.x, 30.f*p4position.y});
+        p4.setAngle(30*glm::degrees(body4->GetAngle()));
+
+        if(controller1.getAxisState(pk::GameControllerAxis::LEFT_X) > 8000)
+            body->SetLinearVelocity({5.f, body->GetLinearVelocity().y});
+
+        if(controller1.getAxisState(pk::GameControllerAxis::LEFT_X) < -8000)
+            body->SetLinearVelocity({-5.f, body->GetLinearVelocity().y});
+
+        if(controller1.getButtonState(pk::GameControllerButton::A) == 1)
+            body->SetLinearVelocity({body->GetLinearVelocity().x, -50.f});
+
+        if(controller2.getAxisState(pk::GameControllerAxis::LEFT_X) > 8000)
+            body2->SetLinearVelocity({5.f, body2->GetLinearVelocity().y});
+
+        if(controller2.getAxisState(pk::GameControllerAxis::LEFT_X) < -8000)
+            body2->SetLinearVelocity({-5.f, body2->GetLinearVelocity().y});
+
+        if(controller2.getButtonState(pk::GameControllerButton::A) == 1)
+            body2->SetLinearVelocity({body2->GetLinearVelocity().x, -50.f});
+
+        if(controller3.getAxisState(pk::GameControllerAxis::LEFT_X) > 8000)
+            body3->SetLinearVelocity({5.f, body3->GetLinearVelocity().y});
+
+        if(controller3.getAxisState(pk::GameControllerAxis::LEFT_X) < -8000)
+            body3->SetLinearVelocity({-5.f, body3->GetLinearVelocity().y});
+
+        if(controller3.getButtonState(pk::GameControllerButton::A) == 1)
+            body3->SetLinearVelocity({body3->GetLinearVelocity().x, -50.f});
+
+        if(controller4.getAxisState(pk::GameControllerAxis::LEFT_X) > 8000)
+            body4->SetLinearVelocity({5.f, body4->GetLinearVelocity().y});
+
+        if(controller4.getAxisState(pk::GameControllerAxis::LEFT_X) < -8000)
+            body4->SetLinearVelocity({-5.f, body4->GetLinearVelocity().y});
+
+        if(controller4.getButtonState(pk::GameControllerButton::A) == 1)
+            body4->SetLinearVelocity({body4->GetLinearVelocity().x, -50.f});
+
+        glClear(GL_COLOR_BUFFER_BIT);
+        //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClearColor(1.f, 0.5f, 0.f, 1.f);
+
+        /////////////////////////////////////////////////////////////////
+        //RENDERING PASSES REQUIRE THE PROPER ORDER OF OPERATIONS!!!
+        //OBEY!!!!!!!!!!
+        /////////////////////////////////////////////////////////////////
+
+        //if changing to non-textured (flat) objects...
+        //must provide separate OpenGL states and pass
+        //around to make valid updates in the right order:
+        //shader->lighting->view/camera->projection->models
+        tgShader->use();
+
+        mainLight.update(*textured_glStates.ambientIntensityLocation, *textured_glStates.ambientColorLocation, *textured_glStates.diffuseIntensityLocation, *textured_glStates.directionLocation);
+
+        //initialize view with identity matrix...
+        glm::mat4 view = glm::mat4(1.0f);
+        //view must then be translated "above" the scene on the z-axis
+        //by some arbitrary value so that the objects in the scene are not culled by OpenGL
+        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -0.1f));
+
+        //pass the view to the camera to perform
+        //camera-level (viewport) manipulations
+        cam.update(textured_glStates, view);
+        glUniform3f(*textured_glStates.eyePositionLocation, cam.getPosition().x, cam.getPosition().y, -0.1f);
+        glUniformMatrix4fv(*textured_glStates.viewLocation, 1, GL_FALSE, glm::value_ptr(view));
+
+        glUniformMatrix4fv(*textured_glStates.projectionLocation, 1, GL_FALSE, glm::value_ptr(projection));
+
+        //begin model-level (graphical object) manipulations
+        glm::mat4 model = glm::mat4(1.0f);
+        glUniformMatrix4fv(*textured_glStates.modelLocation, 1, GL_FALSE, glm::value_ptr(model));
+
+        shinyMaterial.use(*textured_glStates.specularIntensityLocation, *textured_glStates.shininessLocation);
+
+        pkWin->draw(ground, textured_glStates);
+        pkWin->draw(platform, textured_glStates);
+        pkWin->draw(platform2, textured_glStates);
+        pkWin->draw(p1, textured_glStates);
+        pkWin->draw(p2, textured_glStates);
+        pkWin->draw(p3, textured_glStates);
+        pkWin->draw(p4, textured_glStates);
+
+        //flock stuff...
+        fShader->use();
+
+        secondLight.update(*flat_glStates.ambientIntensityLocation, *flat_glStates.ambientColorLocation, *flat_glStates.diffuseIntensityLocation, *flat_glStates.directionLocation);
+
+        glUniformMatrix4fv(*flat_glStates.modelLocation, 1, GL_FALSE, glm::value_ptr(model));
+        //camera state updated previously...so just pass the view into the flat GLStates object...
+        glUniformMatrix4fv(*flat_glStates.viewLocation, 1, GL_FALSE, glm::value_ptr(view));
+        glUniformMatrix4fv(*flat_glStates.projectionLocation, 1, GL_FALSE, glm::value_ptr(projection));
+
+        shinyMaterial.use(*flat_glStates.specularIntensityLocation, *flat_glStates.shininessLocation);
+
+        tri->setPosition({w.getPosition().x, w.getPosition().y});
+        tri->setAngle(w.getRotation() + 180.f);
+        pkWin->draw(*tri, flat_glStates);
+
+        rect.rotate(5.f);
+        rect.setPosition({f.getPosition().x, f.getPosition().y});
+        pkWin->draw(rect, flat_glStates);
+
+        for(auto i : triangles)
+        {
+            tri->setScale({0.1f, 0.1f});
+            tri->setPosition({i.getPosition().x, i.getPosition().y});
+            tri->setAngle(i.getRotation() + 180.f);
+            pkWin->draw(*tri, flat_glStates);
+        }
+
+        glUseProgram(0);
+
+        SDL_GL_SwapWindow(win);
+    }
+
+    delete tgShader;
+    delete fShader;
+}
+
